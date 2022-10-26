@@ -16,10 +16,16 @@ func UseValidation(customValidations ...CustomValidation) {
 	validate = validator.New()
 
 	for _, customValidation := range customValidations {
-		validate.RegisterValidation(customValidation.Tag, customValidation.ValidatorFunc)
+		err := validate.RegisterValidation(customValidation.Tag, customValidation.ValidatorFunc)
+		if err != nil {
+			return
+		}
 
 		if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-			v.RegisterValidation(customValidation.Tag, customValidation.ValidatorFunc)
+			err := v.RegisterValidation(customValidation.Tag, customValidation.ValidatorFunc)
+			if err != nil {
+				return
+			}
 		}
 	}
 }

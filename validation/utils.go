@@ -19,7 +19,7 @@ func ValidateStruct(s interface{}) error {
 		val = val.Elem()
 	}
 
-	return validate.Struct(s)
+	return validate.Struct(val)
 }
 
 func ValidateVariable(s interface{}, rules string) error {

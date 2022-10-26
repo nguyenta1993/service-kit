@@ -18,7 +18,10 @@ func UseCommands(commands ...*cobra.Command) {
 	pflag.String(constants.ConfigFlagName, "", "--config=<config-path>")
 	pflag.Int(constants.ForceFlagName, 0, "--force=<version>")
 	pflag.Parse()
-	viper.BindPFlags(pflag.CommandLine)
+	err := viper.BindPFlags(pflag.CommandLine)
+	if err != nil {
+		return
+	}
 
 	for _, cmd := range commands {
 		rootCmd.AddCommand(cmd)

@@ -51,7 +51,10 @@ func execute(cfg databaseConfig, isUp bool, step int) {
 	// Force if version exists
 	version := viper.GetInt(constants.ForceFlagName)
 	if version != 0 {
-		m.Force(version)
+		err := m.Force(version)
+		if err != nil {
+			return
+		}
 	}
 
 	if step == 0 {

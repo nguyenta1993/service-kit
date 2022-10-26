@@ -167,7 +167,7 @@ func (e batchError) Query() (pgx.Rows, error) {
 }
 
 func (e batchError) QueryRow() pgx.Row {
-	return rowError{e.err}
+	return rowError(e)
 }
 
 func (e batchError) Close() error {

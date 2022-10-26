@@ -16,13 +16,17 @@ type ResourceConfig struct {
 var localizer *i18n.Localizer
 var bundle *i18n.Bundle
 
-func InitResources(resources []string) {
+func InitResources(resources []string) error {
 	bundle = i18n.NewBundle(language.Vietnamese)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
 
 	for _, r := range resources {
-		bundle.LoadMessageFile(r)
+		_, err := bundle.LoadMessageFile(r)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func NewLocalizer(resConfig ResourceConfig) {
