@@ -10,7 +10,6 @@ type UserContext struct {
 	UserId      int64  `mapstructure:"sub"`
 	Phonenumber string `mapstructure:"phone"`
 	IsAnonymous bool
-	TikiId      int64 `mapstructure:"tikiid"`
 }
 
 func GetUserContext(c *gin.Context) UserContext {

@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/tikivn/s14e-backend-utils/logger"
-	"github.com/tikivn/s14e-backend-utils/saga/core"
-	"github.com/tikivn/s14e-backend-utils/saga/msg"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
 )
 
 // Orchestrator orchestrates local and distributed processes

@@ -1,7 +1,7 @@
 package registertypes
 
 import (
-	"github.com/tikivn/s14e-backend-utils/saga/msg"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
 )
 
 // RegisterTypes registers internal library types

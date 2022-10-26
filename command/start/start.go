@@ -1,9 +1,9 @@
 package start
 
 import (
-	"github.com/tikivn/s14e-backend-utils/command/constants"
-	"github.com/tikivn/s14e-backend-utils/command/migration"
-	"github.com/tikivn/s14e-backend-utils/config"
+	"github.com/gogovan-korea/ggx-kr-service-utils/command/constants"
+	"github.com/gogovan-korea/ggx-kr-service-utils/command/migration"
+	"github.com/gogovan-korea/ggx-kr-service-utils/config"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

@@ -6,9 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
-	"github.com/tikivn/s14e-backend-utils/http/request"
-	"github.com/tikivn/s14e-backend-utils/logger"
-	jwtToken "github.com/tikivn/s14e-backend-utils/token"
+	"github.com/gogovan-korea/ggx-kr-service-utils/http/request"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	jwtToken "github.com/gogovan-korea/ggx-kr-service-utils/token"
 	"go.uber.org/zap"
 )
 

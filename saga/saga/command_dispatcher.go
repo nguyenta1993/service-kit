@@ -4,9 +4,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/tikivn/s14e-backend-utils/logger"
-	"github.com/tikivn/s14e-backend-utils/saga/core"
-	"github.com/tikivn/s14e-backend-utils/saga/msg"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
 	"go.uber.org/zap"
 )
 

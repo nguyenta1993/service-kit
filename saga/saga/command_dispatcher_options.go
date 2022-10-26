@@ -1,6 +1,6 @@
 package saga
 
-import "github.com/tikivn/s14e-backend-utils/logger"
+import "github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 // CommandDispatcherOption options for CommandConsumers
 type CommandDispatcherOption func(consumer *CommandDispatcher)

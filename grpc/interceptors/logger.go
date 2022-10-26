@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/tikivn/s14e-backend-utils/logger"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

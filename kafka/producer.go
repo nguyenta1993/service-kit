@@ -3,8 +3,8 @@ package kafka
 import (
 	"context"
 
-	"github.com/tikivn/s14e-backend-utils/logger"
-	"github.com/tikivn/s14e-backend-utils/saga/msg"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
 	"go.uber.org/zap"
 
 	"github.com/segmentio/kafka-go"

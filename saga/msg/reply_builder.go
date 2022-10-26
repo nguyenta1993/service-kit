@@ -1,7 +1,7 @@
 package msg
 
 import (
-	"github.com/tikivn/s14e-backend-utils/saga/core"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
 )
 
 // WithReply starts a reply builder allowing custom headers to be injected

@@ -1,4 +1,4 @@
-module github.com/tikivn/s14e-backend-utils
+module github.com/gogovan-korea/ggx-kr-service-utils
 
 go 1.17
 

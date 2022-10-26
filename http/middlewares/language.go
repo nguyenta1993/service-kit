@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"github.com/tikivn/s14e-backend-utils/localization"
+	"github.com/gogovan-korea/ggx-kr-service-utils/localization"
 
 	"github.com/gin-gonic/gin"
 )

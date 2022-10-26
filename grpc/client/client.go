@@ -7,8 +7,8 @@ import (
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
-	"github.com/tikivn/s14e-backend-utils/grpc/interceptors"
-	"github.com/tikivn/s14e-backend-utils/logger"
+	"github.com/gogovan-korea/ggx-kr-service-utils/grpc/interceptors"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

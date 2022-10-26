@@ -9,8 +9,8 @@ import (
 	"syscall"
 	"time"
 
-	interceptors "github.com/tikivn/s14e-backend-utils/grpc/interceptors"
-	"github.com/tikivn/s14e-backend-utils/logger"
+	interceptors "github.com/gogovan-korea/ggx-kr-service-utils/grpc/interceptors"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"

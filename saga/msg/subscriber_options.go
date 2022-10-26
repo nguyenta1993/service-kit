@@ -1,6 +1,6 @@
 package msg
 
-import "github.com/tikivn/s14e-backend-utils/logger"
+import "github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 // SubscriberOption options for MessageConsumers
 type SubscriberOption func(*Subscriber)

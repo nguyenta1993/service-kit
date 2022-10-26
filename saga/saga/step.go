@@ -3,7 +3,7 @@ package saga
 import (
 	"context"
 
-	"github.com/tikivn/s14e-backend-utils/saga/core"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
 )
 
 // Step interface for local, remote, ...other saga steps

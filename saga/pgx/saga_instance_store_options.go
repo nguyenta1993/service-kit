@@ -1,6 +1,6 @@
 package pgx
 
-import "github.com/tikivn/s14e-backend-utils/logger"
+import "github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 type SagaInstanceStoreOption func(*SagaInstanceStore)
 

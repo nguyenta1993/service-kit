@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/tikivn/s14e-backend-utils/logger"
-	"github.com/tikivn/s14e-backend-utils/saga/msg"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
 
 	"github.com/segmentio/kafka-go"
 	"go.uber.org/zap"

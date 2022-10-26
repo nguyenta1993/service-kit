@@ -5,7 +5,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/tikivn/s14e-backend-utils/logger"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 	"github.com/segmentio/kafka-go"
 	"go.uber.org/zap"

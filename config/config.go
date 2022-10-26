@@ -3,7 +3,7 @@ package config
 import (
 	vaultgo "github.com/mittwald/vaultgo"
 	"github.com/spf13/viper"
-	"github.com/tikivn/s14e-backend-utils/vault"
+	"github.com/gogovan-korea/ggx-kr-service-utils/vault"
 )
 
 func LoadConfig(configPath string, config interface{}) {

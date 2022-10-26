@@ -1,6 +1,6 @@
 package msg
 
-import "github.com/tikivn/s14e-backend-utils/logger"
+import "github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
 // EntityEventDispatcherOption options for EntityEventDispatcher
 type EntityEventDispatcherOption func(consumer *EntityEventDispatcher)
