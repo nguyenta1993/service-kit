@@ -13,8 +13,12 @@ import (
 
 func StartHttpServerTracerSpan(c *gin.Context, operationName string) (context.Context, trace.Span) {
 	ctx := otel.GetTextMapPropagator().Extract(c.Request.Context(), propagation.HeaderCarrier(c.Request.Header))
-	ctx, serverSpan := tracer.Start(ctx, operationName)
+	ctx, serverSpan := tracer.Start(ctx, operationName, trace.WithSpanKind(trace.SpanKindServer))
 	return ctx, serverSpan
+}
+
+func StartSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Span) {
+	return tracer.Start(ctx, operationName, trace.WithSpanKind(trace.SpanKindServer))
 }
 
 func GetTextMapCarrierFromMetaData(ctx context.Context) propagation.MapCarrier {
@@ -30,14 +34,14 @@ func GetTextMapCarrierFromMetaData(ctx context.Context) propagation.MapCarrier {
 func StartGrpcServerTracerSpan(ctx context.Context, operationName string) (context.Context, trace.Span) {
 	textMapCarrierFromMetaData := GetTextMapCarrierFromMetaData(ctx)
 	ctx = otel.GetTextMapPropagator().Extract(ctx, textMapCarrierFromMetaData)
-	ctx, serverSpan := tracer.Start(ctx, operationName)
+	ctx, serverSpan := tracer.Start(ctx, operationName, trace.WithSpanKind(trace.SpanKindServer))
 	return ctx, serverSpan
 }
 
 func StartKafkaConsumerTracerSpan(ctx context.Context, headers []kafka.Header, operationName string) (context.Context, trace.Span) {
 	carrierFromKafkaHeaders := TextMapCarrierFromKafkaMessageHeaders(headers)
 	ctx = otel.GetTextMapPropagator().Extract(ctx, carrierFromKafkaHeaders)
-	ctx, serverSpan := tracer.Start(ctx, operationName)
+	ctx, serverSpan := tracer.Start(ctx, operationName, trace.WithSpanKind(trace.SpanKindServer))
 	return ctx, serverSpan
 }
 
@@ -60,7 +64,9 @@ func TextMapCarrierFromKafkaMessageHeaders(headers []kafka.Header) propagation.M
 	return textMap
 }
 
-func GetKafkaTracingHeadersFromSpanCtx(ctx context.Context, carrier propagation.MapCarrier) []kafka.Header {
-	kafkaMessageHeaders := TextMapCarrierToKafkaMessageHeaders(carrier)
+func GetKafkaTracingHeadersFromCtx(ctx context.Context) []kafka.Header {
+	textMap := make(propagation.MapCarrier)
+	otel.GetTextMapPropagator().Inject(ctx, textMap)
+	kafkaMessageHeaders := TextMapCarrierToKafkaMessageHeaders(textMap)
 	return kafkaMessageHeaders
 }

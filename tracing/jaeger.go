@@ -24,7 +24,8 @@ func tracerProvider(jaegerConfig Config) (*tracesdk.TracerProvider, error) {
 	hostPort := strings.Split(jaegerConfig.HostPort, ":")
 	exp, err := j.New(
 		j.WithAgentEndpoint(
-			j.WithAgentHost(jaegerConfig.ServiceName),
+			j.WithAgentHost(hostPort[0]),
+			j.WithAgentPort(hostPort[1]),
 		),
 	)
 
@@ -37,7 +38,7 @@ func tracerProvider(jaegerConfig Config) (*tracesdk.TracerProvider, error) {
 		// Record information about this application in a Resource.
 		tracesdk.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceNameKey.String(hostPort[0]),
+			semconv.ServiceNameKey.String(jaegerConfig.ServiceName),
 			attribute.String("serviceName", jaegerConfig.ServiceName),
 		)),
 	)
