@@ -7,6 +7,7 @@ type HttpServerConfig struct {
 
 	Resources    []string
 	RateLimiting *RateLimitingConfig
+	Name         string
 }
 
 type RateLimitingConfig struct {

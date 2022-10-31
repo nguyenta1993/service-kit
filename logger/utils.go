@@ -2,10 +2,10 @@ package logger
 
 import (
 	"context"
+	"go.opentelemetry.io/otel/trace"
 	"strings"
 
-	"github.com/opentracing/opentracing-go"
-	"github.com/uber/jaeger-client-go"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -30,16 +30,15 @@ func getZapLevel(level string) zapcore.Level {
 }
 
 func WithSpan(logger Logger, ctx context.Context) Logger {
-	if span := opentracing.SpanFromContext(ctx); span != nil {
-		spanLogger := spanLogger{span: span, logger: logger.WithOptions(zap.AddCallerSkip(1))}
-
-		if jaegerCtx, ok := span.Context().(jaeger.SpanContext); ok {
-			spanLogger.spanFields = []zapcore.Field{
-				zap.String("trace_id", jaegerCtx.TraceID().String()),
-				zap.String("span_id", jaegerCtx.SpanID().String()),
-			}
+	if span := trace.SpanFromContext(ctx); span != nil {
+		zLogger := otelzap.New(logger.WithOptions(zap.AddCallerSkip(1)).GetZapLogger())
+		jaegerCtx := span.SpanContext()
+		otelzap.ReplaceGlobals(zLogger)
+		spanLogger := spanLogger{}
+		spanLogger.spanFields = []zapcore.Field{
+			zap.String("trace_id", jaegerCtx.TraceID().String()),
+			zap.String("span_id", jaegerCtx.SpanID().String()),
 		}
-
 		return spanLogger
 	}
 	return logger

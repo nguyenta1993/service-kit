@@ -1,14 +1,13 @@
 package tracing
 
 import (
-	"github.com/opentracing/opentracing-go"
+	"go.opentelemetry.io/otel"
 )
 
-func UseTracing(jaegerConfig Config) {
-	tracer, _, err := NewJaegerTracer(jaegerConfig)
+func UseOpenTelemetry(jaegerConfig Config) {
+	tracerProvider, err := tracerProvider(jaegerConfig)
 	if err != nil {
 		panic(err)
 	}
-
-	opentracing.SetGlobalTracer(tracer)
+	otel.SetTracerProvider(tracerProvider)
 }

@@ -1,18 +1,17 @@
 package logger
 
 import (
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 	"time"
 
-	"github.com/opentracing/opentracing-go"
-	tag "github.com/opentracing/opentracing-go/ext"
-	"github.com/opentracing/opentracing-go/log"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 type spanLogger struct {
 	logger     Logger
-	span       opentracing.Span
+	span       trace.Span
 	spanFields []zapcore.Field
 }
 
@@ -36,13 +35,11 @@ func (sl spanLogger) Error(msg string, fields ...zapcore.Field) {
 
 func (sl spanLogger) Fatal(msg string, fields ...zapcore.Field) {
 	sl.logToSpan("fatal", msg, fields...)
-	tag.Error.Set(sl.span, true)
 	sl.logger.Fatal(msg, append(sl.spanFields, fields...)...)
 }
 
 func (sl spanLogger) Panic(msg string, fields ...zapcore.Field) {
 	sl.logToSpan("panic", msg, fields...)
-	tag.Error.Set(sl.span, true)
 	sl.logger.Fatal(msg, append(sl.spanFields, fields...)...)
 }
 
@@ -63,68 +60,67 @@ func (l spanLogger) GetZapLogger() *zap.Logger {
 }
 
 func (sl spanLogger) logToSpan(level string, msg string, fields ...zapcore.Field) {
-
-	fa := fieldAdapter(make([]log.Field, 0, 2+len(fields)))
-	fa = append(fa, log.String("event", msg))
-	fa = append(fa, log.String("level", level))
+	fa := fieldAdapter(make([]attribute.KeyValue, 0, 2+len(fields)))
+	fa = append(fa, attribute.String("event", msg))
+	fa = append(fa, attribute.String("level", level))
 	for _, field := range fields {
 		field.AddTo(&fa)
 	}
-	sl.span.LogFields(fa...)
+	sl.span.SetAttributes(fa...)
 }
 
-type fieldAdapter []log.Field
+type fieldAdapter []attribute.KeyValue
 
 func (fa *fieldAdapter) AddBool(key string, value bool) {
-	*fa = append(*fa, log.Bool(key, value))
+	*fa = append(*fa, attribute.Bool(key, value))
 }
 
 func (fa *fieldAdapter) AddFloat64(key string, value float64) {
-	*fa = append(*fa, log.Float64(key, value))
+	*fa = append(*fa, attribute.Float64(key, value))
 }
 
 func (fa *fieldAdapter) AddFloat32(key string, value float32) {
-	*fa = append(*fa, log.Float64(key, float64(value)))
+	*fa = append(*fa, attribute.Float64(key, float64(value)))
 }
 
 func (fa *fieldAdapter) AddInt(key string, value int) {
-	*fa = append(*fa, log.Int(key, value))
+	*fa = append(*fa, attribute.Int(key, value))
 }
 
 func (fa *fieldAdapter) AddInt64(key string, value int64) {
-	*fa = append(*fa, log.Int64(key, value))
+	*fa = append(*fa, attribute.Int64(key, value))
 }
 
 func (fa *fieldAdapter) AddInt32(key string, value int32) {
-	*fa = append(*fa, log.Int64(key, int64(value)))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddInt16(key string, value int16) {
-	*fa = append(*fa, log.Int64(key, int64(value)))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddInt8(key string, value int8) {
-	*fa = append(*fa, log.Int64(key, int64(value)))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddUint(key string, value uint) {
-	*fa = append(*fa, log.Uint64(key, uint64(value)))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddUint64(key string, value uint64) {
-	*fa = append(*fa, log.Uint64(key, value))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddUint32(key string, value uint32) {
-	*fa = append(*fa, log.Uint64(key, uint64(value)))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddUint16(key string, value uint16) {
-	*fa = append(*fa, log.Uint64(key, uint64(value)))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddUint8(key string, value uint8) {
-	*fa = append(*fa, log.Uint64(key, uint64(value)))
+	*fa = append(*fa, attribute.Int64(key, int64(value)))
 }
 
 func (fa *fieldAdapter) AddUintptr(key string, value uintptr)                        {}
@@ -137,24 +133,20 @@ func (fa *fieldAdapter) OpenNamespace(key string)                               
 
 func (fa *fieldAdapter) AddDuration(key string, value time.Duration) {
 	// TODO inefficient
-	*fa = append(*fa, log.String(key, value.String()))
+	*fa = append(*fa, attribute.String(key, value.String()))
 }
 
 func (fa *fieldAdapter) AddTime(key string, value time.Time) {
 	// TODO inefficient
-	*fa = append(*fa, log.String(key, value.String()))
+	*fa = append(*fa, attribute.String(key, value.String()))
 }
 
-func (fa *fieldAdapter) AddBinary(key string, value []byte) {
-	*fa = append(*fa, log.Object(key, value))
-}
+func (fa *fieldAdapter) AddBinary(key string, value []byte) {}
 
-func (fa *fieldAdapter) AddByteString(key string, value []byte) {
-	*fa = append(*fa, log.Object(key, value))
-}
+func (fa *fieldAdapter) AddByteString(key string, value []byte) {}
 
 func (fa *fieldAdapter) AddString(key, value string) {
 	if key != "" && value != "" {
-		*fa = append(*fa, log.String(key, value))
+		*fa = append(*fa, attribute.String(key, value))
 	}
 }

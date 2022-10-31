@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"net"
 	"os"
 	"os/signal"
@@ -15,7 +16,6 @@ import (
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
-	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -55,13 +55,15 @@ func NewServer(logger logger.Logger, cfg GrpcServerConfig) (GrpcServer, *grpc.Se
 		grpc.UnaryInterceptor(
 			grpc_middleware.ChainUnaryServer(
 				grpc_ctxtags.UnaryServerInterceptor(),
-				grpc_opentracing.UnaryServerInterceptor(),
 				grpc_prometheus.UnaryServerInterceptor,
 				grpc_recovery.UnaryServerInterceptor(),
 				interceptors.Localizer(),
 				interceptors.Logger(logger),
+				otelgrpc.UnaryServerInterceptor(),
 			),
 		),
+		grpc.ChainStreamInterceptor(
+			otelgrpc.StreamServerInterceptor()),
 	)
 
 	grpc_prometheus.Register(grpcServer)

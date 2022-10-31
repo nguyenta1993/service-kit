@@ -1,11 +1,13 @@
 package tracing
 
 import (
-	"io"
-
-	"github.com/opentracing/opentracing-go"
-	"github.com/uber/jaeger-client-go"
-	"github.com/uber/jaeger-client-go/config"
+	"go.opentelemetry.io/otel/attribute"
+	j "go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/sdk/resource"
+	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.12.0"
+	"go.opentelemetry.io/otel/trace"
+	"strings"
 )
 
 type Config struct {
@@ -15,22 +17,30 @@ type Config struct {
 	LogSpans    bool
 }
 
-func NewJaegerTracer(jaegerConfig Config) (opentracing.Tracer, io.Closer, error) {
-	cfg := &config.Configuration{
-		ServiceName: jaegerConfig.ServiceName,
+var tracer trace.Tracer
 
-		// "const" sampler is a binary sampling strategy: 0=never sample, 1=always sample.
-		Sampler: &config.SamplerConfig{
-			Type:  "const",
-			Param: 1,
-		},
+func tracerProvider(jaegerConfig Config) (*tracesdk.TracerProvider, error) {
+	// Create the Jaeger exporter
+	hostPort := strings.Split(jaegerConfig.HostPort, ":")
+	exp, err := j.New(
+		j.WithAgentEndpoint(
+			j.WithAgentHost(jaegerConfig.ServiceName),
+		),
+	)
 
-		// Log the emitted spans to stdout.
-		Reporter: &config.ReporterConfig{
-			LogSpans:           jaegerConfig.LogSpans,
-			LocalAgentHostPort: jaegerConfig.HostPort,
-		},
+	if err != nil {
+		return nil, err
 	}
-
-	return cfg.NewTracer(config.Logger(jaeger.StdLogger))
+	tp := tracesdk.NewTracerProvider(
+		// Always be sure to batch in production.
+		tracesdk.WithBatcher(exp),
+		// Record information about this application in a Resource.
+		tracesdk.WithResource(resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceNameKey.String(hostPort[0]),
+			attribute.String("serviceName", jaegerConfig.ServiceName),
+		)),
+	)
+	tracer = tp.Tracer(jaegerConfig.ServiceName)
+	return tp, nil
 }

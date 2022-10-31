@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"net/http"
 	"os"
 	"os/signal"
@@ -40,6 +41,7 @@ func NewServer(logger logger.Logger, cfg HttpServerConfig) (HttpServer, *gin.Eng
 	router.Use(m.SetLanguage(cfg.Resources))
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Use(m.LoggerMiddleware(logger))
+	router.Use(otelgin.Middleware(cfg.Name))
 	if cfg.RateLimiting != nil {
 		router.Use(m.RateLimittingMiddleware(logger, router, cfg.RateLimiting.RateFormat))
 	}
