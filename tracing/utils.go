@@ -11,14 +11,14 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func StartHttpServerTracerSpan(c *gin.Context, operationName string) (context.Context, trace.Span) {
+func StartHttpServerTracerSpan(c *gin.Context, operationName string, opts ...trace.SpanStartOption) (context.Context, trace.Span) {
 	ctx := otel.GetTextMapPropagator().Extract(c.Request.Context(), propagation.HeaderCarrier(c.Request.Header))
-	ctx, serverSpan := tracer.Start(ctx, operationName, trace.WithSpanKind(trace.SpanKindServer))
+	ctx, serverSpan := tracer.Start(ctx, operationName, append(opts, trace.WithSpanKind(trace.SpanKindServer))...)
 	return ctx, serverSpan
 }
 
-func StartSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Span) {
-	return tracer.Start(ctx, operationName, trace.WithSpanKind(trace.SpanKindServer))
+func StartSpanFromContext(ctx context.Context, operationName string, opts ...trace.SpanStartOption) (context.Context, trace.Span) {
+	return tracer.Start(ctx, operationName, append(opts, trace.WithSpanKind(trace.SpanKindServer))...)
 }
 
 func GetTextMapCarrierFromMetaData(ctx context.Context) propagation.MapCarrier {
@@ -69,4 +69,12 @@ func GetKafkaTracingHeadersFromCtx(ctx context.Context) []kafka.Header {
 	otel.GetTextMapPropagator().Inject(ctx, textMap)
 	kafkaMessageHeaders := TextMapCarrierToKafkaMessageHeaders(textMap)
 	return kafkaMessageHeaders
+}
+
+func InjectTextMapCarrierToGrpcMetaData(ctx context.Context) context.Context {
+	textMap := make(propagation.MapCarrier)
+	otel.GetTextMapPropagator().Inject(ctx, textMap)
+	md := metadata.New(textMap)
+	ctx = metadata.NewOutgoingContext(ctx, md)
+	return ctx
 }

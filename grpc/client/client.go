@@ -2,18 +2,18 @@ package client
 
 import (
 	"context"
-	"crypto/tls"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"time"
 
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"github.com/gogovan-korea/ggx-kr-service-utils/grpc/interceptors"
 	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/credentials"
 )
 
 const (
@@ -29,21 +29,24 @@ func NewClientConn(ctx context.Context, logger logger.Logger, port string, devel
 				grpc_retry.WithCodes(codes.NotFound, codes.Aborted),
 				grpc_retry.WithMax(backoffRetries),
 			),
+			otelgrpc.UnaryClientInterceptor(),
 			interceptors.ClientLogger(logger),
 		))
 
+	streamInterceptors := grpc.WithStreamInterceptor(
+		otelgrpc.StreamClientInterceptor(),
+	)
+
 	var opts grpc.DialOption
 	if development {
-		creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
-		opts = grpc.WithTransportCredentials(creds)
-	} else {
-		opts = grpc.WithInsecure()
+		opts = grpc.WithTransportCredentials(insecure.NewCredentials())
 	}
 
 	clientConn, err := grpc.DialContext(
 		ctx,
 		port,
 		unaryInterceptorOption,
+		streamInterceptors,
 		opts,
 	)
 
