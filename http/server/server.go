@@ -2,10 +2,12 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -13,6 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 	m "github.com/gogovan-korea/ggx-kr-service-utils/http/middlewares"
 	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/zsais/go-gin-prometheus"
 	"go.uber.org/zap"
 )
 
@@ -30,14 +33,22 @@ type HttpServer interface {
 
 func NewServer(logger logger.Logger, cfg HttpServerConfig) (HttpServer, *gin.Engine) {
 	gin.SetMode(gin.ReleaseMode)
+	p := ginprometheus.NewPrometheus(cfg.Name)
+	p.ReqCntURLLabelMappingFn = func(c *gin.Context) string {
+		url := c.Request.URL.Path
+		for _, p := range c.Params {
+			url = strings.Replace(url, p.Value, fmt.Sprintf(":%s", p.Key), 1)
+			break
+		}
+		return url
+	}
 
 	router := gin.New()
-
 	httpServerInstance := &http.Server{
 		Addr:    cfg.Port,
 		Handler: router,
 	}
-
+	p.Use(router)
 	router.Use(m.SetLanguage(cfg.Resources))
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Use(m.LoggerMiddleware(logger))
