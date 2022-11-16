@@ -1,9 +1,11 @@
 package config
 
 import (
+	"github.com/gogovan-korea/ggx-kr-service-utils/vault"
 	vaultgo "github.com/mittwald/vaultgo"
 	"github.com/spf13/viper"
-	"github.com/gogovan-korea/ggx-kr-service-utils/vault"
+	"os"
+	"strings"
 )
 
 func LoadConfig(configPath string, config interface{}) {
@@ -13,17 +15,16 @@ func LoadConfig(configPath string, config interface{}) {
 
 	viper.SetConfigType(Yaml)
 	viper.SetConfigFile(configPath)
-
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
 
-	// Update config data if it's not the development env
-	if viper.GetString("vault.address") != "" {
+	//Update config data if it's not the development env
+	if viper.GetString("vault.address") != "" && !viper.GetBool("development") {
 		updateDataFromVault()
 	}
-
-	viper.AutomaticEnv()
 
 	if config != nil {
 		if err := viper.Unmarshal(config); err != nil {
@@ -39,6 +40,10 @@ func updateDataFromVault() {
 	role := viper.GetString("vault.role")
 	mountPoint := viper.GetString("vault.mountPoint")
 
+	if token == "" {
+		token = os.Getenv("VAULT_TOKEN")
+	}
+
 	var vaultClient *vault.VaultClient
 	if token != "" {
 		vaultClient, _ = vault.NewVaultClient(address, vaultgo.WithAuthToken(token))
@@ -46,8 +51,10 @@ func updateDataFromVault() {
 		vaultClient, _ = vault.NewVaultClient(address, vaultgo.WithKubernetesAuth(role, vaultgo.WithMountPoint(mountPoint)))
 	}
 
-	secretData, _ := vaultClient.GetSecretKeys(path)
-
+	secretData, err := vaultClient.GetSecretKeys(path)
+	if err != nil {
+		panic(err)
+	}
 	for key, s := range secretData {
 		viper.Set(key, s)
 	}
