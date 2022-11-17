@@ -3,6 +3,7 @@ package redis
 import (
 	"time"
 
+	"github.com/go-redis/redis/extra/redisotel/v8"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -19,7 +20,7 @@ const (
 )
 
 func NewUniversalRedisClient(cfg Config) redis.UniversalClient {
-	return redis.NewUniversalClient(&redis.UniversalOptions{
+	rdb := redis.NewUniversalClient(&redis.UniversalOptions{
 		Addrs:    cfg.Addrs,
 		Password: cfg.Password,
 		DB:       cfg.DB,
@@ -36,4 +37,6 @@ func NewUniversalRedisClient(cfg Config) redis.UniversalClient {
 		PoolTimeout: poolTimeout,
 		IdleTimeout: idleTimeout,
 	})
+	rdb.AddHook(redisotel.NewTracingHook())
+	return rdb
 }
