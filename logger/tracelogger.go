@@ -8,30 +8,54 @@ import (
 )
 
 type traceLogger struct {
-	otelzap.LoggerWithCtx
+	l otelzap.LoggerWithCtx
+}
+
+func (t traceLogger) Debug(msg string, fields ...zapcore.Field) {
+	t.l.Debug(msg, fields...)
+}
+
+func (t traceLogger) Info(msg string, fields ...zapcore.Field) {
+	t.l.Info(msg, fields...)
+}
+
+func (t traceLogger) Warn(msg string, fields ...zapcore.Field) {
+	t.l.Warn(msg, fields...)
+}
+
+func (t traceLogger) Error(msg string, fields ...zapcore.Field) {
+	t.l.Error(msg, fields...)
+}
+
+func (t traceLogger) Fatal(msg string, fields ...zapcore.Field) {
+	t.l.Fatal(msg, fields...)
+}
+
+func (t traceLogger) Panic(msg string, fields ...zapcore.Field) {
+	t.l.Panic(msg, fields...)
 }
 
 func (t traceLogger) Log(keyvals ...interface{}) error {
-	t.LoggerWithCtx.WithOptions(zap.AddCallerSkip(2)).Sugar().Infow("log", keyvals...)
+	t.l.WithOptions(zap.AddCallerSkip(2)).Sugar().Infow("log", keyvals...)
 	return nil
 }
 
 func (t traceLogger) With(fields ...zapcore.Field) Logger {
-	t.LoggerWithCtx.ZapLogger().With(fields...)
+	t.l.ZapLogger().With(fields...)
 	return t
 }
 
 func (t traceLogger) WithOptions(opts ...zap.Option) Logger {
-	t.LoggerWithCtx = t.LoggerWithCtx.WithOptions(opts...)
+	t.l = t.l.WithOptions(opts...)
 	return t
 }
 
 func (t traceLogger) GetZapLogger() *zap.Logger {
-	return t.ZapLogger()
+	return t.l.ZapLogger()
 }
 
 // WithTrace  use logger with tracing context
 func WithTrace(logger Logger, ctx context.Context) Logger {
-	log := otelzap.New(logger.GetZapLogger()).Ctx(ctx)
+	log := otelzap.New(logger.WithOptions(zap.AddCallerSkip(2)).GetZapLogger()).Ctx(ctx)
 	return traceLogger{log}
 }
