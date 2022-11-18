@@ -1,5 +1,6 @@
 package config
 
 const (
-	Yaml = "yaml"
+	Yaml   = "yaml"
+	AppEnv = "APP_ENV"
 )
