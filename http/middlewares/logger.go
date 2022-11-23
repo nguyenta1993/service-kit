@@ -3,6 +3,7 @@ package middlewares
 import (
 	"bytes"
 	"strconv"
+	"strings"
 
 	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
 
@@ -25,14 +26,16 @@ func LoggerMiddleware(logger logger.Logger) gin.HandlerFunc {
 		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = blw
 		c.Next()
-		statusCode := c.Writer.Status()
+		if !strings.Contains(c.FullPath(), "swagger") {
+			statusCode := c.Writer.Status()
+			logger.Info(
+				"Response information",
+				zap.String("status_code", strconv.Itoa(statusCode)),
+				zap.String("Method", c.Request.Method),
+				zap.String("URL", c.Request.RequestURI),
+				zap.String("response_body", blw.body.String()),
+			)
+		}
 
-		logger.Info(
-			"Response information",
-			zap.String("status_code", strconv.Itoa(statusCode)),
-			zap.String("Method", c.Request.Method),
-			zap.String("URL", c.Request.RequestURI),
-			zap.String("response_body", blw.body.String()),
-		)
 	}
 }
