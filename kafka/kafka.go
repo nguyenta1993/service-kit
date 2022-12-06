@@ -2,14 +2,19 @@ package kafka
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"net"
 	"strconv"
 
 	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/segmentio/kafka-go/sasl/plain"
 
 	"github.com/segmentio/kafka-go"
 	"go.uber.org/zap"
 )
+
+var dialer *kafka.Dialer
 
 func UseKafka(ctx context.Context, logger logger.Logger, cfg *Config, consumerConfig *ConsumerConfig) *kafka.Conn {
 	kafkaConn := connectKafkaBrokers(ctx, logger, cfg)
@@ -26,7 +31,9 @@ func UseKafka(ctx context.Context, logger logger.Logger, cfg *Config, consumerCo
 }
 
 func connectKafkaBrokers(ctx context.Context, logger logger.Logger, cfg *Config) *kafka.Conn {
-	kafkaConn, err := kafka.DialContext(ctx, "tcp", cfg.Config.Brokers[0])
+	InitDialer(&cfg.Dialer)
+
+	kafkaConn, err := dialer.DialContext(ctx, "tcp", cfg.Config.Brokers[0])
 	if err != nil {
 		logger.Error("kafka connection", zap.Error(err))
 	}
@@ -36,9 +43,34 @@ func connectKafkaBrokers(ctx context.Context, logger logger.Logger, cfg *Config)
 		logger.Error("kafkaConn.Brokers", zap.Error(err))
 		return nil
 	}
-
 	logger.Info("kafka connected to brokers", zap.Any("Brokers", brokers))
 	return kafkaConn
+}
+
+func InitDialer(config ...*DialerConfig) {
+
+	if dialer != nil {
+		return
+	}
+	if len(config) == 0 {
+		dialer = kafka.DefaultDialer
+	}
+	cfg := config[0]
+	rootCAs, _ := x509.SystemCertPool()
+	if rootCAs == nil {
+		rootCAs = x509.NewCertPool()
+	}
+	dialer = &kafka.Dialer{
+		DualStack: true,
+		SASLMechanism: plain.Mechanism{
+			Username: cfg.Username, // access key
+			Password: cfg.Password, // secret
+		},
+		TLS: &tls.Config{
+			InsecureSkipVerify: true,
+			RootCAs:            rootCAs,
+		},
+	}
 }
 
 func initKafkaTopics(ctx context.Context, logger logger.Logger, cfg *Config, kafkaConn *kafka.Conn) {
@@ -51,7 +83,7 @@ func initKafkaTopics(ctx context.Context, logger logger.Logger, cfg *Config, kaf
 	controllerURI := net.JoinHostPort(controller.Host, strconv.Itoa(controller.Port))
 	logger.Info("kafka controller uri", zap.String("controllerURI", controllerURI))
 
-	conn, err := kafka.DialContext(ctx, "tcp", controllerURI)
+	conn, err := dialer.DialContext(ctx, "tcp", controllerURI)
 	if err != nil {
 		logger.Error("DialContext controller", zap.Error(err))
 		return

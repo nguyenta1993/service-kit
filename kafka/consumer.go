@@ -34,12 +34,13 @@ func NewConsumerGroup(brokers []string, groupID string, logger logger.Logger) Co
 	return &consumerGroup{Brokers: brokers, GroupID: groupID, logger: logger, serializer: DefaultSerializer, ackWait: DefaultAckWait}
 }
 
-//Listen in one topic only
+// Listen in one topic only
 func (c *consumerGroup) Listen(ctx context.Context, channel string, consumer msg.ReceiveMessageFunc) error {
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: c.Brokers,
 		GroupID: c.GroupID,
 		Topic:   channel,
+		Dialer:  dialer,
 	})
 
 	defer func(reader *kafka.Reader) {

@@ -18,7 +18,8 @@ const (
 	maxWait                = 1 * time.Second
 )
 
-func NewKafkaReader(kafkaURL []string, groupTopics []string, groupID string) *kafka.Reader {
+func NewKafkaReader(kafkaURL []string, groupTopics []string, groupID string, cfg ...*DialerConfig) *kafka.Reader {
+	InitDialer(cfg...)
 	return kafka.NewReader(kafka.ReaderConfig{
 		Brokers:                kafkaURL,
 		GroupID:                groupID,
@@ -31,8 +32,6 @@ func NewKafkaReader(kafkaURL []string, groupTopics []string, groupID string) *ka
 		PartitionWatchInterval: partitionWatchInterval,
 		MaxAttempts:            maxAttempts,
 		MaxWait:                maxWait,
-		Dialer: &kafka.Dialer{
-			Timeout: dialTimeout,
-		},
+		Dialer:                 dialer,
 	})
 }

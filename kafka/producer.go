@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"context"
+	"time"
 
 	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
 	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
@@ -16,8 +17,15 @@ type Producer struct {
 	serializer Serializer
 }
 
-func NewProducer(log logger.Logger, writer *kafka.Writer) *Producer {
-	return &Producer{log: log, w: NewWriter(writer), serializer: DefaultSerializer}
+func NewProducer(log logger.Logger, brokers []string, async bool, timeout time.Duration, cfg ...*DialerConfig) *Producer {
+	InitDialer(cfg...)
+	w := kafka.NewWriter(kafka.WriterConfig{
+		Dialer:       dialer,
+		Async:        async,
+		BatchTimeout: timeout,
+		Brokers:      brokers,
+	})
+	return &Producer{log: log, w: NewWriter(w), serializer: DefaultSerializer}
 }
 
 func (p *Producer) PublishMessage(ctx context.Context, msgs ...kafka.Message) error {
@@ -33,7 +41,7 @@ func (p *Producer) Close(context.Context) error {
 	return err
 }
 
-//Send to one topic only
+// Send to one topic only
 func (p *Producer) Send(ctx context.Context, channel string, message msg.Message) error {
 	kafkaMsg, err := p.serializer.Serialize(message)
 	if err != nil {
