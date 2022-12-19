@@ -24,7 +24,12 @@ type cacheImpl[T any] struct {
 	cache *cache.Cache
 }
 
-func (c cacheImpl[T]) Del(ctx context.Context, key string) error {
+func (c cacheImpl[T]) Del(ctx context.Context, key string) (err error) {
+	ctx, span := tracing.StartSpanFromContext(ctx, "cacheImpl[T].Del"+key)
+	defer func() {
+		span.RecordError(err)
+		span.End()
+	}()
 	return c.cache.Delete(ctx, key)
 }
 
