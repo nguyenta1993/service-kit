@@ -17,10 +17,15 @@ const (
 type CacheInterface[T any] interface {
 	Get(ctx context.Context, key string) (*T, error)
 	Set(ctx context.Context, key string, value T, ttl time.Duration) error
+	Del(ctx context.Context, key string) error
 }
 
 type cacheImpl[T any] struct {
 	cache *cache.Cache
+}
+
+func (c cacheImpl[T]) Del(ctx context.Context, key string) error {
+	return c.cache.Delete(ctx, key)
 }
 
 func (c cacheImpl[T]) Get(ctx context.Context, key string) (val *T, err error) {
