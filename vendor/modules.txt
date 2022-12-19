@@ -43,22 +43,25 @@ github.com/go-playground/universal-translator
 # github.com/go-playground/validator/v10 v10.10.0
 ## explicit; go 1.13
 github.com/go-playground/validator/v10
-# github.com/go-redis/redis/extra/rediscmd/v8 v8.11.5
+# github.com/go-redis/cache/v9 v9.0.0-beta.1
+## explicit; go 1.13
+github.com/go-redis/cache/v9
+# github.com/go-redis/redis/extra/rediscmd/v9 v9.0.0-rc.2
 ## explicit; go 1.15
-github.com/go-redis/redis/extra/rediscmd/v8
-# github.com/go-redis/redis/extra/redisotel/v8 v8.11.5
+github.com/go-redis/redis/extra/rediscmd/v9
+# github.com/go-redis/redis/extra/redisotel/v9 v9.0.0-rc.2
 ## explicit; go 1.15
-github.com/go-redis/redis/extra/redisotel/v8
-# github.com/go-redis/redis/v8 v8.11.5
+github.com/go-redis/redis/extra/redisotel/v9
+# github.com/go-redis/redis/v9 v9.0.0-rc.2
 ## explicit; go 1.17
-github.com/go-redis/redis/v8
-github.com/go-redis/redis/v8/internal
-github.com/go-redis/redis/v8/internal/hashtag
-github.com/go-redis/redis/v8/internal/hscan
-github.com/go-redis/redis/v8/internal/pool
-github.com/go-redis/redis/v8/internal/proto
-github.com/go-redis/redis/v8/internal/rand
-github.com/go-redis/redis/v8/internal/util
+github.com/go-redis/redis/v9
+github.com/go-redis/redis/v9/internal
+github.com/go-redis/redis/v9/internal/hashtag
+github.com/go-redis/redis/v9/internal/hscan
+github.com/go-redis/redis/v9/internal/pool
+github.com/go-redis/redis/v9/internal/proto
+github.com/go-redis/redis/v9/internal/rand
+github.com/go-redis/redis/v9/internal/util
 # github.com/go-resty/resty/v2 v2.6.0
 ## explicit; go 1.11
 github.com/go-resty/resty/v2
@@ -400,6 +403,18 @@ github.com/uptrace/opentelemetry-go-extra/otelutil
 # github.com/uptrace/opentelemetry-go-extra/otelzap v0.1.17
 ## explicit; go 1.18
 github.com/uptrace/opentelemetry-go-extra/otelzap
+# github.com/vmihailenco/go-tinylfu v0.2.2
+## explicit; go 1.15
+github.com/vmihailenco/go-tinylfu
+# github.com/vmihailenco/msgpack/v5 v5.3.4
+## explicit; go 1.11
+github.com/vmihailenco/msgpack/v5
+github.com/vmihailenco/msgpack/v5/msgpcode
+# github.com/vmihailenco/tagparser/v2 v2.0.0
+## explicit; go 1.15
+github.com/vmihailenco/tagparser/v2
+github.com/vmihailenco/tagparser/v2/internal
+github.com/vmihailenco/tagparser/v2/internal/parser
 # github.com/xdg-go/pbkdf2 v1.0.0
 ## explicit; go 1.9
 github.com/xdg-go/pbkdf2
@@ -474,7 +489,6 @@ go.opentelemetry.io/otel/propagation
 go.opentelemetry.io/otel/semconv/internal
 go.opentelemetry.io/otel/semconv/v1.10.0
 go.opentelemetry.io/otel/semconv/v1.12.0
-go.opentelemetry.io/otel/semconv/v1.7.0
 # go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.11.1
 ## explicit; go 1.18
 go.opentelemetry.io/otel/exporters/otlp/internal/retry
@@ -486,7 +500,7 @@ go.opentelemetry.io/otel/exporters/otlp/otlptrace/internal/tracetransform
 # go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.11.1
 ## explicit; go 1.18
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc
-# go.opentelemetry.io/otel/metric v0.32.1
+# go.opentelemetry.io/otel/metric v0.33.0
 ## explicit; go 1.18
 go.opentelemetry.io/otel/metric
 go.opentelemetry.io/otel/metric/global
@@ -528,13 +542,13 @@ go.uber.org/zap/internal/bufferpool
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
 go.uber.org/zap/zapcore
-# golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d
+# golang.org/x/crypto v0.1.0
 ## explicit; go 1.17
 golang.org/x/crypto/ed25519
 golang.org/x/crypto/ocsp
 golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/sha3
-# golang.org/x/net v0.0.0-20221004154528-8021a29435af
+# golang.org/x/net v0.2.0
 ## explicit; go 1.17
 golang.org/x/net/context
 golang.org/x/net/http/httpguts
@@ -545,17 +559,18 @@ golang.org/x/net/idna
 golang.org/x/net/internal/timeseries
 golang.org/x/net/publicsuffix
 golang.org/x/net/trace
-# golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+# golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
 ## explicit
 golang.org/x/sync/errgroup
-# golang.org/x/sys v0.0.0-20221006211917-84dc82d7e875
+golang.org/x/sync/singleflight
+# golang.org/x/sys v0.2.0
 ## explicit; go 1.17
 golang.org/x/sys/cpu
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 golang.org/x/sys/windows/registry
-# golang.org/x/text v0.3.7
+# golang.org/x/text v0.4.0
 ## explicit; go 1.17
 golang.org/x/text/cases
 golang.org/x/text/internal

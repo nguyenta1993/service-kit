@@ -1,10 +1,9 @@
 package redis
 
 import (
+	"github.com/go-redis/redis/extra/redisotel/v9"
+	"github.com/go-redis/redis/v9"
 	"time"
-
-	"github.com/go-redis/redis/extra/redisotel/v8"
-	"github.com/go-redis/redis/v8"
 )
 
 const (
@@ -21,22 +20,23 @@ const (
 
 func NewUniversalRedisClient(cfg Config) redis.UniversalClient {
 	rdb := redis.NewUniversalClient(&redis.UniversalOptions{
-		Addrs:    cfg.Addrs,
-		Password: cfg.Password,
-		DB:       cfg.DB,
-
-		MaxRetries:      maxRetries,
-		MinRetryBackoff: minRetryBackoff,
-		MaxRetryBackoff: maxRetryBackoff,
-		DialTimeout:     dialTimeout,
-		ReadTimeout:     readTimeout,
-		WriteTimeout:    writeTimeout,
-		PoolSize:        cfg.PoolSize,
-		MinIdleConns:    minIdleConns,
-
-		PoolTimeout: poolTimeout,
-		IdleTimeout: idleTimeout,
+		Addrs:                 cfg.Addrs,
+		DB:                    cfg.DB,
+		MaxRetries:            maxRetries,
+		MinRetryBackoff:       minRetryBackoff,
+		MaxRetryBackoff:       maxRetryBackoff,
+		DialTimeout:           dialTimeout,
+		ReadTimeout:           readTimeout,
+		WriteTimeout:          writeTimeout,
+		ContextTimeoutEnabled: false,
+		PoolFIFO:              false,
+		PoolSize:              cfg.PoolSize,
+		PoolTimeout:           poolTimeout,
+		MinIdleConns:          minIdleConns,
+		ConnMaxIdleTime:       idleTimeout,
 	})
-	rdb.AddHook(redisotel.NewTracingHook())
+	if err := redisotel.InstrumentTracing(rdb, redisotel.WithDBStatement(false)); err != nil {
+		return nil
+	}
 	return rdb
 }

@@ -2,9 +2,12 @@ package tracing
 
 import (
 	"context"
+	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
+	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"
 	"github.com/segmentio/kafka-go"
@@ -77,4 +80,13 @@ func InjectTextMapCarrierToGrpcMetaData(ctx context.Context) context.Context {
 	md := metadata.New(textMap)
 	ctx = metadata.NewOutgoingContext(ctx, md)
 	return ctx
+}
+
+func RecordSpan(ctx context.Context, message string, err error, span trace.Span, log logger.Logger) {
+	if err != nil {
+		logger.WithTrace(log, ctx).Error(message, zap.Error(err))
+		span.SetStatus(codes.Error, err.Error())
+	}
+	span.RecordError(err)
+	span.End()
 }
