@@ -7,8 +7,8 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
 )
 
 // MessageSubscriber interface

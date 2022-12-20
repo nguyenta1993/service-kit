@@ -13,8 +13,8 @@ import (
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	m "github.com/gogovan-korea/ggx-kr-service-utils/http/middlewares"
-	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	m "github.com/gogovan/ggx-kr-service-utils/http/middlewares"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
 	"github.com/zsais/go-gin-prometheus"
 	"go.uber.org/zap"
 )

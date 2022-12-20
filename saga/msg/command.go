@@ -1,6 +1,6 @@
 package msg
 
-import "github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+import "github.com/gogovan/ggx-kr-service-utils/saga/core"
 
 // DomainCommand interface for commands that are shared across the domain
 type DomainCommand interface {

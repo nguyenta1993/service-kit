@@ -3,7 +3,7 @@ package saga
 import (
 	"context"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
 )
 
 // RemoteStepActionOption options for remoteStepAction

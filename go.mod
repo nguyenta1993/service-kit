@@ -1,4 +1,4 @@
-module github.com/gogovan-korea/ggx-kr-service-utils
+module github.com/gogovan/ggx-kr-service-utils
 
 go 1.19
 

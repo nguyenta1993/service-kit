@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
+	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
 )
 
 func TestReceiveMessageFunc_ReceiveMessage(t *testing.T) {

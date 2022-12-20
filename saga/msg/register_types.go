@@ -1,7 +1,7 @@
 package msg
 
 import (
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
 )
 
 // RegisterTypes should be called after registering a new marshaller; especially after registering a new default

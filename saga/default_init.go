@@ -5,12 +5,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
-	_ "github.com/gogovan-korea/ggx-kr-service-utils/saga/msgpack"
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/saga"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
+	_ "github.com/gogovan/ggx-kr-service-utils/saga/msgpack"
+	"github.com/gogovan/ggx-kr-service-utils/saga/saga"
 
-	pgx "github.com/gogovan-korea/ggx-kr-service-utils/saga/pgx"
+	pgx "github.com/gogovan/ggx-kr-service-utils/saga/pgx"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/prometheus/client_golang/prometheus"

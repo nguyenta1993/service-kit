@@ -1,8 +1,8 @@
 package saga
 
 import (
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
 )
 
 // Command is a core.Command with message header information

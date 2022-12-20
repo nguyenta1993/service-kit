@@ -8,8 +8,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/command/constants"
-	"github.com/gogovan-korea/ggx-kr-service-utils/config"
+	"github.com/gogovan/ggx-kr-service-utils/command/constants"
+	"github.com/gogovan/ggx-kr-service-utils/config"
 
 	"github.com/golang-migrate/migrate/v4/database"
 	"github.com/golang-migrate/migrate/v4/source/file"

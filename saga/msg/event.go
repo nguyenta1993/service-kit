@@ -1,7 +1,7 @@
 package msg
 
 import (
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
 )
 
 // DomainEvent interface for events that are shared across the domain

@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
 	"go.uber.org/zap"
 )
 

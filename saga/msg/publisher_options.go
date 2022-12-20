@@ -1,6 +1,6 @@
 package msg
 
-import "github.com/gogovan-korea/ggx-kr-service-utils/logger"
+import "github.com/gogovan/ggx-kr-service-utils/logger"
 
 // PublisherOption options for PublisherPublisher
 type PublisherOption func(*Publisher)

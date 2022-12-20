@@ -1,6 +1,6 @@
 package msg
 
-import "github.com/gogovan-korea/ggx-kr-service-utils/logger"
+import "github.com/gogovan/ggx-kr-service-utils/logger"
 
 // EventDispatcherOption options for EventDispatcher
 type EventDispatcherOption func(consumer *EventDispatcher)

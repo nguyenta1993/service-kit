@@ -1,8 +1,8 @@
 package saga
 
 import (
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
 )
 
 type stepResults struct {

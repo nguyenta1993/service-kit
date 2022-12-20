@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/msg"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
 )
 
 func TestReplyBuilder_Failure(t *testing.T) {

@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	interceptors "github.com/gogovan-korea/ggx-kr-service-utils/grpc/interceptors"
-	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	interceptors "github.com/gogovan/ggx-kr-service-utils/grpc/interceptors"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"

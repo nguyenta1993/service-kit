@@ -4,10 +4,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
 	"go.uber.org/zap"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/saga/core"
+	"github.com/gogovan/ggx-kr-service-utils/saga/core"
 )
 
 // CommandHandlerFunc function handlers for msg.Command

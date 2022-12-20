@@ -1,6 +1,6 @@
 package saga
 
-import "github.com/gogovan-korea/ggx-kr-service-utils/logger"
+import "github.com/gogovan/ggx-kr-service-utils/logger"
 
 // OrchestratorOption options for Orchestrator
 type OrchestratorOption func(o *Orchestrator)

@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogovan-korea/ggx-kr-service-utils/logger"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

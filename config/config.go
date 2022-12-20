@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/gogovan-korea/ggx-kr-service-utils/vault"
+	"github.com/gogovan/ggx-kr-service-utils/vault"
 	vaultgo "github.com/mittwald/vaultgo"
 	"github.com/spf13/viper"
 	"os"
