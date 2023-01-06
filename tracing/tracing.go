@@ -7,8 +7,11 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 )
 
-func UseOpenTelemetry(jaegerConfig Config, logger ...logger.Logger) {
-	tracerProvider, err := tracerProvider(jaegerConfig)
+func UseOpenTelemetry(config Config, logger ...logger.Logger) {
+	if !config.Enable {
+		return
+	}
+	tracerProvider, err := tracerProvider(config)
 	if err != nil {
 		panic(err)
 	}
