@@ -8,10 +8,10 @@ import (
 )
 
 func UseOpenTelemetry(config Config, logger ...logger.Logger) {
+	tracerProvider, err := tracerProvider(config)
 	if !config.Enable {
 		return
 	}
-	tracerProvider, err := tracerProvider(config)
 	if err != nil {
 		panic(err)
 	}

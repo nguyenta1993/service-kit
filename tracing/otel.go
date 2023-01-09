@@ -22,6 +22,10 @@ type Config struct {
 var tracer trace.Tracer
 
 func tracerProvider(config Config) (*tracesdk.TracerProvider, error) {
+	if config.Enable {
+		tracer = trace.NewNoopTracerProvider().Tracer(config.ServiceName)
+		return nil, nil
+	}
 	url := os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
 	if url != "" {
 		config.HostPort = url
