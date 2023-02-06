@@ -113,7 +113,14 @@ func getDbDriver(cfg databaseConfig) (database.Driver, error) {
 
 func GetDbConfigs(dbConfigKeys ...string) []databaseConfig {
 	var cfg interface{}
-	config.LoadConfig(viper.GetString(constants.ConfigFlagName), &cfg)
+	var configPath string
+	// Priority config from env
+	if environ := os.Getenv(config.AppEnv); environ != "" {
+		configPath = fmt.Sprintf("./config/%s/config.yaml", environ)
+	} else {
+		configPath = viper.GetString(constants.ConfigFlagName)
+	}
+	config.LoadConfig(configPath, &cfg)
 
 	data := cfg.(map[string]interface{})
 
