@@ -89,7 +89,9 @@ func getDbDriver(cfg databaseConfig) (database.Driver, error) {
 		if err != nil {
 			panic(err)
 		}
-		return mysql.WithInstance(db.DB, &mysql.Config{})
+		return mysql.WithInstance(db.DB, &mysql.Config{
+			MigrationsTable: "go_schema_migrations",
+		})
 	} else if cfg.DbType == "postgres" {
 		db, err := sqlx.Connect(cfg.DbType, cfg.ConnectionString)
 		if err != nil {
