@@ -23,7 +23,7 @@ func LoadConfig(configPath string, config interface{}) {
 	}
 
 	// update data from .vaultenv file
-	if !viper.GetBool("development") {
+	if !localViper.GetBool("development") {
 		vaultEnvPath := os.Getenv("VAULT_ENV_PATH")
 		if vaultEnvPath == "" {
 			vaultEnvPath = "/app/.vaultenv"

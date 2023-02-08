@@ -1,6 +1,7 @@
 package vault
 
 import (
+	"crypto/x509"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -14,7 +15,9 @@ import (
 type Client struct {
 	*api.Client
 
-	auth AuthProvider
+	auth    AuthProvider
+	conf    *api.Config
+	tlsConf *TLSConfig
 }
 
 type Service struct {
@@ -67,7 +70,7 @@ func NewClient(addr string, tlsConf *TLSConfig, opts ...ClientOpts) (*Client, er
 		return nil, err
 	}
 
-	client := &Client{Client: vaultClient}
+	client := &Client{Client: vaultClient, conf: conf, tlsConf: tlsConf}
 
 	for _, opt := range opts {
 		err := opt(client)
@@ -96,6 +99,10 @@ func (c *Client) renewToken() error {
 	return nil
 }
 
+func (c *Client) reloadTLSConfig() error {
+	return c.conf.ConfigureTLS(c.tlsConf.TLSConfig)
+}
+
 func (c *Client) Request(method string, path []string, body, response interface{}, opts *RequestOptions) error {
 	if opts == nil {
 		opts = &RequestOptions{}
@@ -115,14 +122,27 @@ func (c *Client) Request(method string, path []string, body, response interface{
 	}
 
 	resp, err := c.RawRequest(r)
-	if resp != nil && resp.StatusCode == http.StatusForbidden && c.auth != nil && !opts.SkipRenewal {
-		_ = resp.Body.Close()
-
-		err = c.renewToken()
-		if err != nil {
-			return errors.Wrap(err, "token renew after request returned 403 failed")
+	isTokenExpiredErr := resp != nil && resp.StatusCode == http.StatusForbidden && c.auth != nil
+	isCertExpiredErr := err != nil && errors.As(err, &x509.UnknownAuthorityError{})
+	if (isTokenExpiredErr || isCertExpiredErr) && !opts.SkipRenewal {
+		if resp != nil {
+			_ = resp.Body.Close()
 		}
-		
+
+		if c.tlsConf != nil {
+			reloadErr := c.reloadTLSConfig()
+			if reloadErr != nil {
+				return errors.Wrapf(reloadErr, "tlsconfig reload failed after request failed with %q", err.Error())
+			}
+		}
+
+		if c.auth != nil {
+			tokenErr := c.renewToken()
+			if tokenErr != nil {
+				return errors.Wrap(tokenErr, "token renew after request returned 403 failed")
+			}
+		}
+
 		// We have to build a new request, the new token has to be set in that one
 		// Renewal has to be skipped to make sure we never renew in a loop.
 		opts.SkipRenewal = true

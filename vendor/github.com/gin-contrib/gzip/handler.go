@@ -18,17 +18,17 @@ type gzipHandler struct {
 }
 
 func newGzipHandler(level int, options ...Option) *gzipHandler {
-	var gzPool sync.Pool
-	gzPool.New = func() interface{} {
-		gz, err := gzip.NewWriterLevel(ioutil.Discard, level)
-		if err != nil {
-			panic(err)
-		}
-		return gz
-	}
 	handler := &gzipHandler{
 		Options: DefaultOptions,
-		gzPool:  gzPool,
+		gzPool: sync.Pool{
+			New: func() interface{} {
+				gz, err := gzip.NewWriterLevel(ioutil.Discard, level)
+				if err != nil {
+					panic(err)
+				}
+				return gz
+			},
+		},
 	}
 	for _, setter := range options {
 		setter(handler.Options)
@@ -63,8 +63,7 @@ func (g *gzipHandler) Handle(c *gin.Context) {
 func (g *gzipHandler) shouldCompress(req *http.Request) bool {
 	if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") ||
 		strings.Contains(req.Header.Get("Connection"), "Upgrade") ||
-		strings.Contains(req.Header.Get("Content-Type"), "text/event-stream") {
-
+		strings.Contains(req.Header.Get("Accept"), "text/event-stream") {
 		return false
 	}
 
