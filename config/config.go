@@ -28,6 +28,7 @@ func LoadConfig(configPath string, config interface{}) {
 		if vaultEnvPath == "" {
 			vaultEnvPath = "/app/.vaultenv"
 		}
+		println("Load config from external vault: " + vaultEnvPath + "")
 		localViper.SetConfigFile(vaultEnvPath)
 		localViper.SetConfigType(Env)
 		if err := localViper.MergeInConfig(); err != nil {
@@ -47,6 +48,7 @@ func LoadConfig(configPath string, config interface{}) {
 }
 
 func updateDataFromVault() {
+	println("Fall back to update config from remote vault")
 	address := viper.GetString("vault.address")
 	path := viper.GetString("vault.path")
 	token := viper.GetString("vault.token")

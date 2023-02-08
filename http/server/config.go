@@ -8,6 +8,7 @@ type HttpServerConfig struct {
 	Resources    []string
 	RateLimiting *RateLimitingConfig
 	Name         string
+	AllowOrigins []string
 }
 
 type RateLimitingConfig struct {
