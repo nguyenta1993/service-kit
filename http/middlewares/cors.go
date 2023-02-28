@@ -16,7 +16,8 @@ func Cors(allowOrigins ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		allows := strings.Join(allowOrigins, ",")
 		if allows == "" {
-			allows = "*"
+			c.Next()
+			return
 		}
 		c.Writer.Header().Set("Access-Control-Allow-Origin", allows)
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
