@@ -13,25 +13,24 @@ func LoadConfig(configPath string, config interface{}) {
 		panic("Missing config path")
 	}
 
-	localViper := viper.New()
-	localViper.SetConfigType(Yaml)
-	localViper.SetConfigFile(configPath)
-	localViper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
-	localViper.AutomaticEnv()
-	if err := localViper.ReadInConfig(); err != nil {
+	viper.SetConfigType(Yaml)
+	viper.SetConfigFile(configPath)
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
+	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
 
 	// update data from .vaultenv file
-	if !localViper.GetBool("development") {
+	if !viper.GetBool("development") {
 		vaultEnvPath := os.Getenv("VAULT_ENV_PATH")
 		if vaultEnvPath == "" {
 			vaultEnvPath = "/app/.vaultenv"
 		}
 		println("Load config from external vault: " + vaultEnvPath + "")
-		localViper.SetConfigFile(vaultEnvPath)
-		localViper.SetConfigType(Env)
-		if err := localViper.MergeInConfig(); err != nil {
+		viper.SetConfigFile(vaultEnvPath)
+		viper.SetConfigType(Env)
+		if err := viper.MergeInConfig(); err != nil {
 			if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 				if viper.GetString("vault.address") != "" {
 					updateDataFromVault()
@@ -41,7 +40,7 @@ func LoadConfig(configPath string, config interface{}) {
 		}
 	}
 	if config != nil {
-		if err := localViper.Unmarshal(config); err != nil {
+		if err := viper.Unmarshal(config); err != nil {
 			panic(err)
 		}
 	}
