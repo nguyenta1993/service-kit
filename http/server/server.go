@@ -53,7 +53,10 @@ func NewServer(logger logger.Logger, cfg HttpServerConfig) (HttpServer, *gin.Eng
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Use(m.LoggerMiddleware(logger))
 	router.Use(otelgin.Middleware(cfg.Name))
-	router.Use(gin.Recovery())
+	router.Use(gin.CustomRecovery(func(c *gin.Context, err any) {
+		logger.Error("panic triggered", zap.Any("panic", err))
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+	}))
 	//router.Use(m.Cors(cfg.AllowOrigins...))
 	if cfg.RateLimiting != nil {
 		router.Use(m.RateLimittingMiddleware(logger, router, cfg.RateLimiting.RateFormat))

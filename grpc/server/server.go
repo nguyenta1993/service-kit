@@ -48,7 +48,7 @@ type GrpcServerConfig struct {
 
 func NewServer(logger logger.Logger, cfg GrpcServerConfig) (GrpcServer, *grpc.Server) {
 	customFunc := func(p interface{}) (err error) {
-		logger.Fatal("panic triggered", zap.Any("panic", p))
+		logger.Fatal("grpc panic triggered", zap.Any("panic", p))
 		return status.Errorf(codes.Unknown, "panic triggered: %v", p)
 	}
 	// Shared options for the logger, with a custom gRPC code to log level function.
