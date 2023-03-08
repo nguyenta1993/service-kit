@@ -59,7 +59,7 @@ func NewServer(logger logger.Logger, cfg HttpServerConfig) (HttpServer, *gin.Eng
 	}))
 	//router.Use(m.Cors(cfg.AllowOrigins...))
 	if cfg.RateLimiting != nil {
-		router.Use(m.RateLimittingMiddleware(logger, router, cfg.RateLimiting.RateFormat))
+		router.Use(m.RateLimitingMiddleware(logger, router, cfg.RateLimiting.RateFormat))
 	}
 
 	return &Server{logger: logger, cfg: cfg, Router: router, httpServerInstance: httpServerInstance}, router

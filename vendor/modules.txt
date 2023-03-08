@@ -91,10 +91,6 @@ github.com/goccy/go-json/internal/encoder/vm_color_indent
 github.com/goccy/go-json/internal/encoder/vm_indent
 github.com/goccy/go-json/internal/errors
 github.com/goccy/go-json/internal/runtime
-# github.com/gogovan-korea/ggx-kr-service-utils v1.0.6
-## explicit; go 1.19
-# github.com/gogovan/ggx-kr-common-service v1.0.1
-## explicit; go 1.19
 # github.com/golang-jwt/jwt v3.2.2+incompatible
 ## explicit
 github.com/golang-jwt/jwt
@@ -321,6 +317,8 @@ github.com/mitchellh/reflectwalk
 # github.com/mittwald/vaultgo v0.1.3
 ## explicit; go 1.14
 github.com/mittwald/vaultgo
+# github.com/moby/sys/mount v0.3.0
+## explicit; go 1.16
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
 github.com/modern-go/concurrent
@@ -470,6 +468,8 @@ github.com/spf13/viper/internal/encoding/yaml
 # github.com/subosito/gotenv v1.4.1
 ## explicit; go 1.18
 github.com/subosito/gotenv
+# github.com/tidwall/pretty v1.2.0
+## explicit; go 1.16
 # github.com/ugorji/go/codec v1.2.7
 ## explicit; go 1.11
 github.com/ugorji/go/codec
@@ -556,6 +556,8 @@ go.mongodb.org/mongo-driver/x/mongo/driver/operation
 go.mongodb.org/mongo-driver/x/mongo/driver/session
 go.mongodb.org/mongo-driver/x/mongo/driver/topology
 go.mongodb.org/mongo-driver/x/mongo/driver/wiremessage
+# go.opencensus.io v0.24.0
+## explicit; go 1.13
 # go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.36.4
 ## explicit; go 1.18
 go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
@@ -781,6 +783,8 @@ google.golang.org/protobuf/types/known/fieldmaskpb
 google.golang.org/protobuf/types/known/structpb
 google.golang.org/protobuf/types/known/timestamppb
 google.golang.org/protobuf/types/known/wrapperspb
+# gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
+## explicit
 # gopkg.in/ini.v1 v1.67.0
 ## explicit
 gopkg.in/ini.v1
