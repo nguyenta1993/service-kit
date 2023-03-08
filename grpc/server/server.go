@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"net"
 	"os"
 	"os/signal"
@@ -45,6 +47,15 @@ type GrpcServerConfig struct {
 }
 
 func NewServer(logger logger.Logger, cfg GrpcServerConfig) (GrpcServer, *grpc.Server) {
+	customFunc := func(p interface{}) (err error) {
+		logger.Fatal("panic triggered", zap.Any("panic", p))
+		return status.Errorf(codes.Unknown, "panic triggered: %v", p)
+	}
+	// Shared options for the logger, with a custom gRPC code to log level function.
+	opts := []grpc_recovery.Option{
+		grpc_recovery.WithRecoveryHandler(customFunc),
+	}
+
 	grpcServer := grpc.NewServer(
 		grpc.KeepaliveParams(keepalive.ServerParameters{
 			MaxConnectionIdle: time.Duration(cfg.MaxConnectionIdle) * time.Minute,
@@ -60,10 +71,13 @@ func NewServer(logger logger.Logger, cfg GrpcServerConfig) (GrpcServer, *grpc.Se
 				interceptors.Localizer(),
 				interceptors.Logger(logger),
 				otelgrpc.UnaryServerInterceptor(),
+				grpc_recovery.UnaryServerInterceptor(opts...),
 			),
 		),
 		grpc.ChainStreamInterceptor(
-			otelgrpc.StreamServerInterceptor()),
+			otelgrpc.StreamServerInterceptor(),
+			grpc_recovery.StreamServerInterceptor(opts...),
+		),
 	)
 
 	grpc_prometheus.Register(grpcServer)

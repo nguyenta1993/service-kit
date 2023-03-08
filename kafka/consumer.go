@@ -3,6 +3,7 @@ package kafka
 import (
 	"context"
 	"io"
+	"strings"
 	"sync"
 	"time"
 
@@ -108,9 +109,18 @@ func (c *consumerGroup) ConsumeTopic(ctx context.Context, groupTopics []string, 
 
 	defer func() {
 		if err := r.Close(); err != nil {
-			c.logger.Warn("Close consumer topic", zap.Error(err))
+			c.logger.Warn("Close consumer topic", zap.Error(err),
+				zap.String("topic", strings.Join(groupTopics, ",")))
 		}
 	}()
+
+	//defer func() {
+	//	if err := recover(); err != nil {
+	//		c.logger.Fatal("kafka consumer panic",
+	//			zap.Any("panic", err),
+	//			zap.String("topic", strings.Join(groupTopics, ",")))
+	//	}
+	//}()
 
 	c.logger.Info("Starting consumer topic",
 		zap.String("GroupID", c.GroupID),
@@ -123,7 +133,9 @@ func (c *consumerGroup) ConsumeTopic(ctx context.Context, groupTopics []string, 
 		go worker(ctx, r, wg, i)
 	}
 	wg.Wait()
+
 }
+
 func (c *consumerGroup) Close(context.Context) error {
 	c.logger.Warn("closing message source")
 	return nil

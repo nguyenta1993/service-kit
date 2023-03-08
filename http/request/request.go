@@ -7,9 +7,8 @@ import (
 const UserContextKey = "usercontext"
 
 type UserContext struct {
-	UserId      int64  `mapstructure:"sub"`
-	Phonenumber string `mapstructure:"phone"`
-	IsAnonymous bool
+	Id    int64 `mapstructure:"_id"`
+	OrgId int64 `mapstructure:"_orgId"`
 }
 
 func GetUserContext(c *gin.Context) UserContext {
@@ -17,8 +16,5 @@ func GetUserContext(c *gin.Context) UserContext {
 }
 
 func SetUserContext(c *gin.Context, userContext *UserContext) {
-	if userContext.Phonenumber == "" {
-		userContext.IsAnonymous = true
-	}
 	c.Set(UserContextKey, *userContext)
 }

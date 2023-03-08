@@ -24,7 +24,7 @@ func NewUnauthorizedErrorResponse() *UnauthorizedErrorResponse {
 	}
 }
 
-func AuthenticationMiddleware(logger logger.Logger) gin.HandlerFunc {
+func UserContextMiddleware(logger logger.Logger) gin.HandlerFunc {
 	tokenHeaderName := "Bearer "
 	return func(c *gin.Context) {
 		authToken := c.GetHeader("Authorization")
