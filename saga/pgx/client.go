@@ -156,6 +156,10 @@ type batchError struct {
 	err error
 }
 
+func (e batchError) QueryFunc(scans []interface{}, f func(pgx.QueryFuncRow) error) (pgconn.CommandTag, error) {
+	return nil, e.err
+}
+
 var _ pgx.BatchResults = (*batchError)(nil)
 
 func (e batchError) Exec() (pgconn.CommandTag, error) {
