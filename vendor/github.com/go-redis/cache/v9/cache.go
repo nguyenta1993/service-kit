@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/go-redis/redis/v9"
 	"github.com/klauspost/compress/s2"
+	"github.com/redis/go-redis/v9"
 	"github.com/vmihailenco/msgpack/v5"
 	"golang.org/x/sync/singleflight"
 )
@@ -185,7 +185,8 @@ func (cd *Cache) set(item *Item) ([]byte, bool, error) {
 
 // Exists reports whether value for the given key exists.
 func (cd *Cache) Exists(ctx context.Context, key string) bool {
-	return cd.Get(ctx, key, nil) == nil
+	_, err := cd.getBytes(ctx, key, false)
+	return err == nil
 }
 
 // Get gets the value for the given key.

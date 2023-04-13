@@ -13,10 +13,10 @@ import (
 )
 
 type Config struct {
-	ServiceName string
-	HostPort    string
-	Enable      bool
-	LogSpans    bool
+	ServiceName string `mapstructure:"serviceName"`
+	HostPort    string `mapstructure:"hostPort"`
+	Enable      bool   `mapstructure:"enable"`
+	LogSpans    bool   `mapstructure:"logSpans"`
 }
 
 var tracer trace.Tracer

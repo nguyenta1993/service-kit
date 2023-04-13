@@ -1,8 +1,8 @@
 package redis
 
 import (
-	"github.com/go-redis/redis/extra/redisotel/v9"
-	"github.com/go-redis/redis/v9"
+	"github.com/redis/go-redis/extra/redisotel/v9"
+	"github.com/redis/go-redis/v9"
 	"time"
 )
 
@@ -36,8 +36,7 @@ func NewUniversalRedisClient(cfg Config) redis.UniversalClient {
 		MinIdleConns:          minIdleConns,
 		ConnMaxIdleTime:       idleTimeout,
 	})
-	if err := redisotel.InstrumentTracing(rdb, redisotel.WithDBStatement(false)); err != nil {
-		return nil
-	}
+	_ = redisotel.InstrumentMetrics(rdb)
+	_ = redisotel.InstrumentTracing(rdb, redisotel.WithDBStatement(true))
 	return rdb
 }

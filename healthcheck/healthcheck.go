@@ -18,9 +18,8 @@ import (
 	"go.uber.org/zap"
 )
 
-func RunHealthCheck(
+func Run(
 	ctx context.Context,
-	logger logger.Logger,
 	cfg *HealthcheckConfig,
 	readDb *sqlx.DB,
 	writeDb *sqlx.DB,
@@ -32,7 +31,7 @@ func RunHealthCheck(
 
 		livenessCheck(ctx, cfg.GoroutineThreshold, health)
 		itv := time.Duration(cfg.Interval) * time.Second
-		readinessCheck(ctx, logger, health, itv, readDb, writeDb, redis, client)
+		readinessCheck(ctx, health, itv, readDb, writeDb, redis, client)
 
 		logMd := func(next http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +61,6 @@ func livenessCheck(ctx context.Context, goRoutinesThreshold int, health healthch
 
 func readinessCheck(
 	ctx context.Context,
-	logger logger.Logger,
 	health healthcheck.Handler,
 	interval time.Duration,
 	readDb *sqlx.DB,

@@ -13,7 +13,7 @@ github.com/cenkalti/backoff/v3
 # github.com/cenkalti/backoff/v4 v4.1.3
 ## explicit; go 1.13
 github.com/cenkalti/backoff/v4
-# github.com/cespare/xxhash/v2 v2.1.2
+# github.com/cespare/xxhash/v2 v2.2.0
 ## explicit; go 1.11
 github.com/cespare/xxhash/v2
 # github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
@@ -28,9 +28,15 @@ github.com/fsnotify/fsnotify
 # github.com/gin-contrib/gzip v0.0.6
 ## explicit; go 1.13
 github.com/gin-contrib/gzip
+# github.com/gin-contrib/requestid v0.0.6
+## explicit; go 1.15
+github.com/gin-contrib/requestid
 # github.com/gin-contrib/sse v0.1.0
 ## explicit; go 1.12
 github.com/gin-contrib/sse
+# github.com/gin-contrib/zap v0.1.0
+## explicit; go 1.16
+github.com/gin-contrib/zap
 # github.com/gin-gonic/gin v1.8.1
 ## explicit; go 1.18
 github.com/gin-gonic/gin
@@ -55,15 +61,9 @@ github.com/go-playground/universal-translator
 # github.com/go-playground/validator/v10 v10.11.1
 ## explicit; go 1.13
 github.com/go-playground/validator/v10
-# github.com/go-redis/cache/v9 v9.0.0-beta.1
+# github.com/go-redis/cache/v9 v9.0.0
 ## explicit; go 1.13
 github.com/go-redis/cache/v9
-# github.com/go-redis/redis/extra/rediscmd/v9 v9.0.0-rc.2
-## explicit; go 1.15
-github.com/go-redis/redis/extra/rediscmd/v9
-# github.com/go-redis/redis/extra/redisotel/v9 v9.0.0-rc.2
-## explicit; go 1.15
-github.com/go-redis/redis/extra/redisotel/v9
 # github.com/go-redis/redis/v9 v9.0.0-rc.2
 ## explicit; go 1.17
 github.com/go-redis/redis/v9
@@ -379,6 +379,22 @@ github.com/prometheus/common/model
 github.com/prometheus/procfs
 github.com/prometheus/procfs/internal/fs
 github.com/prometheus/procfs/internal/util
+# github.com/redis/go-redis/extra/rediscmd/v9 v9.0.2
+## explicit; go 1.15
+github.com/redis/go-redis/extra/rediscmd/v9
+# github.com/redis/go-redis/extra/redisotel/v9 v9.0.2
+## explicit; go 1.15
+github.com/redis/go-redis/extra/redisotel/v9
+# github.com/redis/go-redis/v9 v9.0.3
+## explicit; go 1.18
+github.com/redis/go-redis/v9
+github.com/redis/go-redis/v9/internal
+github.com/redis/go-redis/v9/internal/hashtag
+github.com/redis/go-redis/v9/internal/hscan
+github.com/redis/go-redis/v9/internal/pool
+github.com/redis/go-redis/v9/internal/proto
+github.com/redis/go-redis/v9/internal/rand
+github.com/redis/go-redis/v9/internal/util
 # github.com/ryanuber/go-glob v1.0.0
 ## explicit
 github.com/ryanuber/go-glob
@@ -436,7 +452,6 @@ github.com/shamaton/msgpack/internal/encoding
 github.com/shamaton/msgpack/time
 # github.com/sirupsen/logrus v1.9.0
 ## explicit; go 1.13
-github.com/sirupsen/logrus
 # github.com/spf13/afero v1.9.3
 ## explicit; go 1.16
 github.com/spf13/afero
@@ -516,9 +531,6 @@ github.com/xdg-go/stringprep
 # github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a
 ## explicit; go 1.12
 github.com/youmark/pkcs8
-# github.com/zsais/go-gin-prometheus v0.1.0
-## explicit
-github.com/zsais/go-gin-prometheus
 # go.mongodb.org/mongo-driver v1.11.0
 ## explicit; go 1.13
 go.mongodb.org/mongo-driver/bson
@@ -565,7 +577,7 @@ go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
 ## explicit; go 1.18
 go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc
 go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc/internal
-# go.opentelemetry.io/otel v1.11.1
+# go.opentelemetry.io/otel v1.12.0
 ## explicit; go 1.18
 go.opentelemetry.io/otel
 go.opentelemetry.io/otel/attribute
@@ -581,6 +593,7 @@ go.opentelemetry.io/otel/propagation
 go.opentelemetry.io/otel/semconv/internal
 go.opentelemetry.io/otel/semconv/v1.10.0
 go.opentelemetry.io/otel/semconv/v1.12.0
+go.opentelemetry.io/otel/semconv/v1.17.0
 # go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.11.1
 ## explicit; go 1.18
 go.opentelemetry.io/otel/exporters/otlp/internal/retry
@@ -592,25 +605,22 @@ go.opentelemetry.io/otel/exporters/otlp/otlptrace/internal/tracetransform
 # go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.11.1
 ## explicit; go 1.18
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc
-# go.opentelemetry.io/otel/metric v0.33.0
+# go.opentelemetry.io/otel/metric v0.35.0
 ## explicit; go 1.18
 go.opentelemetry.io/otel/metric
 go.opentelemetry.io/otel/metric/global
 go.opentelemetry.io/otel/metric/instrument
-go.opentelemetry.io/otel/metric/instrument/asyncfloat64
-go.opentelemetry.io/otel/metric/instrument/asyncint64
-go.opentelemetry.io/otel/metric/instrument/syncfloat64
 go.opentelemetry.io/otel/metric/instrument/syncint64
 go.opentelemetry.io/otel/metric/internal/global
 go.opentelemetry.io/otel/metric/unit
-# go.opentelemetry.io/otel/sdk v1.11.1
+# go.opentelemetry.io/otel/sdk v1.12.0
 ## explicit; go 1.18
 go.opentelemetry.io/otel/sdk/instrumentation
 go.opentelemetry.io/otel/sdk/internal
 go.opentelemetry.io/otel/sdk/internal/env
 go.opentelemetry.io/otel/sdk/resource
 go.opentelemetry.io/otel/sdk/trace
-# go.opentelemetry.io/otel/trace v1.11.1
+# go.opentelemetry.io/otel/trace v1.12.0
 ## explicit; go 1.18
 go.opentelemetry.io/otel/trace
 # go.opentelemetry.io/proto/otlp v0.19.0
@@ -644,7 +654,7 @@ golang.org/x/crypto/ocsp
 golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/sha3
-# golang.org/x/net v0.2.0
+# golang.org/x/net v0.5.0
 ## explicit; go 1.17
 golang.org/x/net/context
 golang.org/x/net/http/httpguts
@@ -659,14 +669,14 @@ golang.org/x/net/trace
 ## explicit
 golang.org/x/sync/errgroup
 golang.org/x/sync/singleflight
-# golang.org/x/sys v0.2.0
+# golang.org/x/sys v0.4.0
 ## explicit; go 1.17
 golang.org/x/sys/cpu
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 golang.org/x/sys/windows/registry
-# golang.org/x/text v0.4.0
+# golang.org/x/text v0.6.0
 ## explicit; go 1.17
 golang.org/x/text/cases
 golang.org/x/text/internal

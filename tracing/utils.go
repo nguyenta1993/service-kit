@@ -82,9 +82,9 @@ func InjectTextMapCarrierToGrpcMetaData(ctx context.Context) context.Context {
 	return ctx
 }
 
-func RecordSpan(ctx context.Context, message string, err error, span trace.Span, log logger.Logger) {
+func RecordSpan(ctx context.Context, message string, err error, span trace.Span, log ...logger.Logger) {
 	if err != nil {
-		logger.WithTrace(log, ctx).Error(message, zap.Error(err))
+		logger.WithTrace(ctx, log...).Error(message, zap.Error(err))
 		span.SetStatus(codes.Error, err.Error())
 	}
 	span.RecordError(err)

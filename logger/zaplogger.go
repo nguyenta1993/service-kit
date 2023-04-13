@@ -16,7 +16,6 @@ func NewZapLogger(consoleLevel string) Logger {
 	encoderConfig.LevelKey = "lvl"
 	encoderConfig.EncodeTime = zapcore.EpochMillisTimeEncoder // zapcore.ISO8601TimeEncoder
 	encoder := zapcore.NewJSONEncoder(encoderConfig)
-
 	if consoleLevel == "" ||
 		(consoleLevel != DebugLevel && consoleLevel != InfoLevel && consoleLevel != WarnLevel && consoleLevel != ErrorLevel) {
 		consoleLevel = InfoLevel

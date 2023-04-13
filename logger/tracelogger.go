@@ -55,7 +55,14 @@ func (t traceLogger) GetZapLogger() *zap.Logger {
 }
 
 // WithTrace  use logger with tracing context
-func WithTrace(logger Logger, ctx context.Context) Logger {
-	log := otelzap.New(logger.WithOptions(zap.AddCallerSkip(2)).GetZapLogger()).Ctx(ctx)
+func WithTrace(ctx context.Context, logg ...Logger) Logger {
+	logger := getLog(logg).GetZapLogger()
+	log := otelzap.New(logger,
+		otelzap.WithTraceIDField(true),
+		otelzap.WithMinLevel(zapcore.InfoLevel),
+		otelzap.WithStackTrace(true),
+		otelzap.WithCaller(true),
+		otelzap.WithCallerDepth(2),
+		otelzap.WithErrorStatusLevel(zapcore.ErrorLevel)).Ctx(ctx)
 	return traceLogger{log}
 }

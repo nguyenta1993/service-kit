@@ -2,9 +2,10 @@ package cache
 
 import (
 	"context"
+
 	"github.com/go-redis/cache/v9"
-	"github.com/go-redis/redis/v9"
 	"github.com/gogovan/ggx-kr-service-utils/tracing"
+	"github.com/redis/go-redis/v9"
 	"reflect"
 	"time"
 )

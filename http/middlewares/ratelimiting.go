@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func RateLimitingMiddleware(logger logger.Logger, router *gin.Engine, rateFormat string) gin.HandlerFunc {
+func RateLimiting(logger logger.Logger, router *gin.Engine, rateFormat string) gin.HandlerFunc {
 	router.ForwardedByClientIP = true
 	rate, err := limiter.NewRateFromFormatted(rateFormat)
 	if err != nil {

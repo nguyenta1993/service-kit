@@ -27,8 +27,8 @@ import (
 )
 
 type Server struct {
-	logger             logger.Logger
 	cfg                GrpcServerConfig
+	log                logger.Logger
 	GrpcServerInstance *grpc.Server
 }
 
@@ -45,8 +45,39 @@ type GrpcServerConfig struct {
 	MaxConnectionAge  int
 	Time              int
 }
+type GrpcServerOption func(*Server)
 
-func NewServer(logger logger.Logger, cfg GrpcServerConfig) (GrpcServer, *grpc.Server) {
+func WithLogger(log logger.Logger) GrpcServerOption {
+	return func(s *Server) {
+		s.log = log
+	}
+}
+
+func WithPort(port string) GrpcServerOption {
+	return func(s *Server) {
+		s.cfg.Port = port
+	}
+}
+
+func WithDevelopment(development bool) GrpcServerOption {
+	return func(s *Server) {
+		s.cfg.Development = development
+	}
+}
+
+func WithMaxConnectionIdle(maxConnectionIdle int) GrpcServerOption {
+	return func(s *Server) {
+		s.cfg.MaxConnectionIdle = maxConnectionIdle
+	}
+}
+
+func WithTimeout(timeout int) GrpcServerOption {
+	return func(s *Server) {
+		s.cfg.Timeout = timeout
+	}
+}
+
+func NewServer(cfg GrpcServerConfig, options ...GrpcServerOption) (GrpcServer, *grpc.Server) {
 	customFunc := func(p interface{}) (err error) {
 		logger.Fatal("grpc panic triggered", zap.Any("panic", p))
 		return status.Errorf(codes.Unknown, "panic triggered: %v", p)
@@ -69,7 +100,7 @@ func NewServer(logger logger.Logger, cfg GrpcServerConfig) (GrpcServer, *grpc.Se
 				grpc_prometheus.UnaryServerInterceptor,
 				grpc_recovery.UnaryServerInterceptor(),
 				interceptors.Localizer(),
-				interceptors.Logger(logger),
+				interceptors.Logger(logger.GetDefaultLogger()),
 				otelgrpc.UnaryServerInterceptor(),
 				grpc_recovery.UnaryServerInterceptor(opts...),
 			),
@@ -85,8 +116,11 @@ func NewServer(logger logger.Logger, cfg GrpcServerConfig) (GrpcServer, *grpc.Se
 	if cfg.Development {
 		reflection.Register(grpcServer)
 	}
+	for _, option := range options {
+		option(&Server{cfg: cfg, GrpcServerInstance: grpcServer})
+	}
 
-	return &Server{logger: logger, cfg: cfg, GrpcServerInstance: grpcServer}, grpcServer
+	return &Server{cfg: cfg, GrpcServerInstance: grpcServer}, grpcServer
 }
 
 func (s *Server) Run() {
@@ -95,14 +129,14 @@ func (s *Server) Run() {
 
 	lis, err := net.Listen("tcp", s.cfg.Port)
 	if err != nil {
-		s.logger.Fatal("failed to listen", zap.Error(err))
+		logger.Fatal("failed to listen", zap.Error(err))
 		panic(err)
 	}
 
 	go func() {
-		s.logger.Info("GRPC server is listening at: ", zap.String("PORT", lis.Addr().String()))
+		logger.Info("GRPC server is listening at: ", zap.String("PORT", lis.Addr().String()))
 		if err := s.GrpcServerInstance.Serve(lis); err != nil {
-			s.logger.Fatal("failed to listen", zap.Error(err))
+			logger.Fatal("failed to listen", zap.Error(err))
 		}
 	}()
 
@@ -118,6 +152,6 @@ func (s *Server) Run() {
 }
 
 func (s *Server) Stop() {
-	s.logger.Info("Stop GRPC server")
+	logger.Info("Stop GRPC server")
 	s.GrpcServerInstance.GracefulStop()
 }
