@@ -16,9 +16,8 @@ import (
 
 var dialer *kafka.Dialer
 
-func UseKafka(ctx context.Context, logger logger.Logger, cfg *Config, consumerConfig *ConsumerConfig) *kafka.Conn {
-	kafkaConn := connectKafkaBrokers(ctx, logger, cfg)
-
+func UseKafka(ctx context.Context, logger logger.Logger, cfg *Config, consumerConfig *ConsumerConfig) (*kafka.Conn, func() (*kafka.Conn, error)) {
+	kafkaConn, connectFunc := connectKafkaBrokers(ctx, logger, cfg)
 	if cfg.Config.InitTopics {
 		initKafkaTopics(ctx, logger, cfg, kafkaConn)
 	}
@@ -27,24 +26,25 @@ func UseKafka(ctx context.Context, logger logger.Logger, cfg *Config, consumerCo
 		consumerTopics(ctx, logger, cfg, consumerConfig)
 	}
 
-	return kafkaConn
+	return kafkaConn, connectFunc
 }
 
-func connectKafkaBrokers(ctx context.Context, logger logger.Logger, cfg *Config) *kafka.Conn {
+func connectKafkaBrokers(ctx context.Context, logger logger.Logger, cfg *Config) (*kafka.Conn, func() (*kafka.Conn, error)) {
 	InitDialer(&cfg.Dialer)
 
 	kafkaConn, err := dialer.DialContext(ctx, "tcp", cfg.Config.Brokers[0])
 	if err != nil {
 		logger.Error("kafka connection", zap.Error(err))
 	}
-
 	brokers, err := kafkaConn.Brokers()
 	if err != nil {
 		logger.Error("kafkaConn.Brokers", zap.Error(err))
-		return nil
+		return nil, nil
 	}
 	logger.Info("kafka connected to brokers", zap.Any("Brokers", brokers))
-	return kafkaConn
+	return kafkaConn, func() (*kafka.Conn, error) {
+		return dialer.DialContext(ctx, "tcp", cfg.Config.Brokers[0])
+	}
 }
 
 func InitDialer(config ...*DialerConfig) {
