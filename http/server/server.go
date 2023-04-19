@@ -45,10 +45,11 @@ func NewServer(cfg HttpServerConfig, options ...HttpServerOption) (HttpServer, *
 	router.Use(m.SetLanguage(cfg.Resources))
 	router.Use(m.Gzip())
 	router.Use(m.RequestId())
-	router.Use(m.Logging(instance.log))
 	router.Use(m.Tracing(cfg.Name))
 	router.Use(m.Recovery(instance.log))
 	metrics.Use(router)
+	//auth token is error when logging don't know root cause yet
+	router.Use(m.Logging(instance.log, "/auth/token"))
 	if cfg.RateLimiting != nil {
 		router.Use(m.RateLimiting(instance.log, router, cfg.RateLimiting.RateFormat))
 	}
