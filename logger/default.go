@@ -28,7 +28,7 @@ func NewDefaultLogger(consoleLevel string) Logger {
 		zapcore.NewCore(encoder, zapcore.Lock(os.Stdout), getZapLevel(consoleLevel)),
 		zap.AddStacktrace(zapcore.ErrorLevel),
 		zap.AddCaller())
-	logger = logger.WithOptions(zap.AddCallerSkip(1))
+	logger = logger.WithOptions(zap.AddCallerSkip(2))
 	return zapLogger{logger}
 }
 

@@ -32,11 +32,11 @@ func Run(
 		liveCheck(ctx, health, itv, readDb, writeDb, redis, client, kafkaConnectFunc)
 		gin.SetMode(gin.ReleaseMode)
 		router := gin.New()
-		router.Use(middlewares.Logging(logger.GetDefaultLogger()))
+		router.Use(middlewares.Logging())
 		router.Use(gin.WrapH(health))
-		logger.Info("Heathcheck server listening on port", zap.String("Port", cfg.Port))
+		logger.Info("Heath check server listening on port", zap.String("Port", cfg.Port))
 		if err := router.Run(cfg.Port); err != nil {
-			logger.Warn("Heathcheck server", zap.Error(err))
+			logger.Warn("Heath check server", zap.Error(err))
 		}
 	}
 }

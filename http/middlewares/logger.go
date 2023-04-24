@@ -28,14 +28,24 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 	return w.ResponseWriter.Write(b)
 }
 
-func RequestLogger() gin.HandlerFunc {
+func Logging(skip ...string) gin.HandlerFunc {
+	skip = append(skip, "/metrics")
 	return func(c *gin.Context) {
+		for _, s := range skip {
+			if s == c.Request.URL.Path {
+				c.Next()
+				return
+			}
+		}
+
 		start := time.Now()
 		var body []byte
 		var buf bytes.Buffer
 		tee := io.TeeReader(c.Request.Body, &buf)
 		body, _ = io.ReadAll(tee)
 		c.Request.Body = io.NopCloser(&buf)
+		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
+		c.Writer = blw
 		c.Next()
 		fields := []zapcore.Field{
 			zap.Int("status", c.Writer.Status()),
@@ -43,6 +53,7 @@ func RequestLogger() gin.HandlerFunc {
 			zap.String("path", c.Request.URL.Path),
 			zap.String("ip", c.ClientIP()),
 			zap.String("user-agent", c.Request.UserAgent()),
+			zap.String("response", blw.body.String()),
 		}
 
 		if len(c.Request.URL.RawQuery) > 0 {
@@ -58,8 +69,9 @@ func RequestLogger() gin.HandlerFunc {
 		}
 
 		if len(body) > 0 {
-			fields = append(fields, zap.String("body", string(body)))
+			fields = append(fields, zap.String("request", string(body)))
 		}
+
 		fields = append(fields, zap.Duration("latency", time.Since(start)))
 		if len(c.Errors) > 0 {
 			// Append error field if this is an erroneous request.
@@ -70,26 +82,6 @@ func RequestLogger() gin.HandlerFunc {
 			logger.Info(c.Request.URL.Path, fields...)
 		}
 	}
-}
-
-func Logging(logger logger.Logger, skips ...string) gin.HandlerFunc {
-	return ginzap.GinzapWithConfig(logger.GetZapLogger(), &ginzap.Config{
-		UTC:        true,
-		TimeFormat: time.RFC3339,
-		SkipPaths:  skips,
-		Context: func(c *gin.Context) []zapcore.Field {
-			var fields []zapcore.Field
-			if requestID := c.Writer.Header().Get("X-Request-Id"); requestID != "" {
-				fields = append(fields, zap.String("request_id", requestID))
-			}
-			// log trace and span ID
-			if span := trace.SpanFromContext(c.Request.Context()).SpanContext(); span.IsValid() {
-				fields = append(fields, zap.String("trace_id", span.TraceID().String()))
-				fields = append(fields, zap.String("span_id", span.SpanID().String()))
-			}
-			return fields
-		},
-	})
 }
 
 func Recovery(logger logger.Logger) gin.HandlerFunc {
