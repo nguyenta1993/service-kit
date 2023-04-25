@@ -29,7 +29,7 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 }
 
 func Logging(skip ...string) gin.HandlerFunc {
-	skip = append(skip, "/metrics")
+	skip = append(skip, "/metrics", "/auth/token")
 	return func(c *gin.Context) {
 		for _, s := range skip {
 			if s == c.Request.URL.Path {
