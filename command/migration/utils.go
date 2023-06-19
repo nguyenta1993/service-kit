@@ -3,6 +3,7 @@ package migration
 import (
 	"context"
 	"fmt"
+	"github.com/gogovan/ggx-kr-service-utils/logger"
 	"github.com/golang-migrate/migrate/v4"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
@@ -48,6 +49,8 @@ func execute(cfg databaseConfig, isUp bool, step int) {
 		fmt.Println("migrate error", zap.Error(err))
 	}
 
+	currentVersion, _, err := m.Version()
+
 	// Force if version exists
 	version := viper.GetInt(constants.ForceFlagName)
 	if version != 0 {
@@ -59,7 +62,16 @@ func execute(cfg databaseConfig, isUp bool, step int) {
 
 	if step == 0 {
 		if isUp {
-			err = m.Up()
+			for {
+				if err = m.Steps(1); err != nil {
+					break
+				} else {
+					version, dirty, _ := m.Version()
+					if !dirty {
+						currentVersion = version
+					}
+				}
+			}
 		} else {
 			err = m.Down()
 		}
@@ -71,11 +83,15 @@ func execute(cfg databaseConfig, isUp bool, step int) {
 		}
 	}
 
-	if err == nil {
+	if err == nil || err == os.ErrNotExist {
 		fmt.Println("Migrate done with success")
 	} else {
 		if err.Error() != constants.NoChange {
-			fmt.Println("migrate error", zap.Error(err))
+			if dbErr, ok := err.(database.Error); ok {
+				logger.Error("migrate error", zap.Error(err), zap.String("query", string(dbErr.Query)), zap.Error(dbErr.OrigErr))
+
+			}
+			logger.Info("migrate error", zap.Error(m.Force(int(currentVersion))))
 			os.Exit(1)
 		} else {
 			fmt.Println("No change")
