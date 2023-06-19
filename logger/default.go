@@ -9,7 +9,7 @@ import (
 )
 
 type DefaultLogger struct {
-	logger *zap.Logger
+	*zap.Logger
 }
 
 var defaultLogger Logger

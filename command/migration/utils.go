@@ -49,7 +49,7 @@ func execute(cfg databaseConfig, isUp bool, step int) {
 		fmt.Println("migrate error", zap.Error(err))
 	}
 
-	currentVersion, _, err := m.Version()
+	currentVersion, _, _ := m.Version()
 
 	// Force if version exists
 	version := viper.GetInt(constants.ForceFlagName)
