@@ -2,7 +2,7 @@ package metrics
 
 import (
 	"fmt"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/nguyenta1993/service-kit/logger"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"

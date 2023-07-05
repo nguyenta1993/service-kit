@@ -6,10 +6,10 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"time"
 
-	"github.com/gogovan/ggx-kr-service-utils/grpc/interceptors"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+	"github.com/nguyenta1993/service-kit/grpc/interceptors"
+	"github.com/nguyenta1993/service-kit/logger"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

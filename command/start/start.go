@@ -2,9 +2,9 @@ package start
 
 import (
 	"fmt"
-	"github.com/gogovan/ggx-kr-service-utils/command/constants"
-	"github.com/gogovan/ggx-kr-service-utils/command/migration"
-	"github.com/gogovan/ggx-kr-service-utils/config"
+	"github.com/nguyenta1993/service-kit/command/constants"
+	"github.com/nguyenta1993/service-kit/command/migration"
+	"github.com/nguyenta1993/service-kit/config"
 	"os"
 
 	"github.com/spf13/cobra"

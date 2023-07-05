@@ -5,10 +5,10 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gogovan/ggx-kr-service-utils/http/request"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
-	jwtToken "github.com/gogovan/ggx-kr-service-utils/token"
 	"github.com/mitchellh/mapstructure"
+	"github.com/nguyenta1993/service-kit/http/request"
+	"github.com/nguyenta1993/service-kit/logger"
+	jwtToken "github.com/nguyenta1993/service-kit/token"
 	"go.uber.org/zap"
 )
 

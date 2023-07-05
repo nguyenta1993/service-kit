@@ -7,7 +7,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/nguyenta1993/service-kit/logger"
 	"github.com/segmentio/kafka-go/sasl/plain"
 
 	"github.com/segmentio/kafka-go"

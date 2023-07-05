@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/gogovan/ggx-kr-service-utils/saga/core"
-	registertypes "github.com/gogovan/ggx-kr-service-utils/saga/core/register_types"
+	"github.com/nguyenta1993/service-kit/saga/core"
+	registertypes "github.com/nguyenta1993/service-kit/saga/core/register_types"
 
 	"github.com/shamaton/msgpack"
 )

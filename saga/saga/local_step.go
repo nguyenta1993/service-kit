@@ -3,7 +3,7 @@ package saga
 import (
 	"context"
 
-	"github.com/gogovan/ggx-kr-service-utils/saga/core"
+	"github.com/nguyenta1993/service-kit/saga/core"
 )
 
 // LocalStep is used to execute local saga business logic

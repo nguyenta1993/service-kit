@@ -3,7 +3,7 @@ package interceptors
 import (
 	"context"
 
-	"github.com/gogovan/ggx-kr-service-utils/localization"
+	"github.com/nguyenta1993/service-kit/localization"
 
 	"google.golang.org/grpc"
 )

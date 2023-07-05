@@ -4,15 +4,15 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v9"
-	"github.com/gogovan/ggx-kr-service-utils/constants"
-	"github.com/gogovan/ggx-kr-service-utils/http/middlewares"
-	"github.com/gogovan/ggx-kr-service-utils/saga/retry"
 	"github.com/jmoiron/sqlx"
+	"github.com/nguyenta1993/service-kit/constants"
+	"github.com/nguyenta1993/service-kit/http/middlewares"
+	"github.com/nguyenta1993/service-kit/saga/retry"
 	"github.com/segmentio/kafka-go"
 	"time"
 
-	"github.com/gogovan/ggx-kr-service-utils/logger"
 	"github.com/heptiolabs/healthcheck"
+	"github.com/nguyenta1993/service-kit/logger"
 	"go.uber.org/zap"
 )
 

@@ -1,6 +1,6 @@
 package saga
 
-import "github.com/gogovan/ggx-kr-service-utils/saga/core"
+import "github.com/nguyenta1993/service-kit/saga/core"
 
 // Instance is the container for saga data
 type Instance struct {

@@ -1,4 +1,4 @@
-module github.com/gogovan/ggx-kr-service-utils
+module github.com/nguyenta1993/service-kit
 
 go 1.19
 
@@ -144,6 +144,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-retract (
-	v1.3.1
-)
+retract v1.3.1

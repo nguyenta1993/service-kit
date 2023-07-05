@@ -2,7 +2,7 @@ package tracing
 
 import (
 	"context"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/nguyenta1993/service-kit/logger"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/propagation"

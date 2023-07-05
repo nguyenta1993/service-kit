@@ -3,14 +3,14 @@ package migration
 import (
 	"context"
 	"fmt"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/nguyenta1993/service-kit/logger"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
 	"strings"
 
-	"github.com/gogovan/ggx-kr-service-utils/command/constants"
-	"github.com/gogovan/ggx-kr-service-utils/config"
+	"github.com/nguyenta1993/service-kit/command/constants"
+	"github.com/nguyenta1993/service-kit/config"
 
 	"github.com/golang-migrate/migrate/v4/database"
 	"github.com/golang-migrate/migrate/v4/source/file"

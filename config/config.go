@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/gogovan/ggx-kr-service-utils/vault"
 	vaultgo "github.com/mittwald/vaultgo"
+	"github.com/nguyenta1993/service-kit/vault"
 	"github.com/spf13/viper"
 	"os"
 	"strings"

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/go-redis/cache/v9"
-	"github.com/gogovan/ggx-kr-service-utils/tracing"
+	"github.com/nguyenta1993/service-kit/tracing"
 	"github.com/redis/go-redis/v9"
 	"reflect"
 	"time"

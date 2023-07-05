@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gogovan/ggx-kr-service-utils/logger"
-	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
+	"github.com/nguyenta1993/service-kit/logger"
+	"github.com/nguyenta1993/service-kit/saga/msg"
 
 	"github.com/segmentio/kafka-go"
 	"go.uber.org/zap"

@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"github.com/gogovan/ggx-kr-service-utils/localization"
+	"github.com/nguyenta1993/service-kit/localization"
 
 	"github.com/gin-gonic/gin"
 )

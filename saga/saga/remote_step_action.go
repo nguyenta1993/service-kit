@@ -3,8 +3,8 @@ package saga
 import (
 	"context"
 
-	"github.com/gogovan/ggx-kr-service-utils/saga/core"
-	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
+	"github.com/nguyenta1993/service-kit/saga/core"
+	"github.com/nguyenta1993/service-kit/saga/msg"
 )
 
 type remoteStepAction struct {

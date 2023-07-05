@@ -12,7 +12,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/nguyenta1993/service-kit/logger"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

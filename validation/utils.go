@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogovan/ggx-kr-service-utils/localization"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/nguyenta1993/service-kit/localization"
+	"github.com/nguyenta1993/service-kit/logger"
 
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"

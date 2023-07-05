@@ -1,6 +1,6 @@
 package msg
 
-import "github.com/gogovan/ggx-kr-service-utils/logger"
+import "github.com/nguyenta1993/service-kit/logger"
 
 // EntityEventDispatcherOption options for EntityEventDispatcher
 type EntityEventDispatcherOption func(consumer *EntityEventDispatcher)

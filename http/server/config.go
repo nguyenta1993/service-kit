@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/gogovan/ggx-kr-service-utils/logger"
-	"github.com/gogovan/ggx-kr-service-utils/metrics"
+	"github.com/nguyenta1993/service-kit/logger"
+	"github.com/nguyenta1993/service-kit/metrics"
 )
 
 type HttpServerConfig struct {

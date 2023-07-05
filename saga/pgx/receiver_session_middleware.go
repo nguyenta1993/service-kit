@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/gogovan/ggx-kr-service-utils/logger"
-	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
+	"github.com/nguyenta1993/service-kit/logger"
+	"github.com/nguyenta1993/service-kit/saga/msg"
 	"go.uber.org/zap"
 
 	"github.com/jackc/pgx/v4"

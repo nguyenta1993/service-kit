@@ -3,9 +3,9 @@ package server
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	m "github.com/gogovan/ggx-kr-service-utils/http/middlewares"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
-	"github.com/gogovan/ggx-kr-service-utils/metrics"
+	m "github.com/nguyenta1993/service-kit/http/middlewares"
+	"github.com/nguyenta1993/service-kit/logger"
+	"github.com/nguyenta1993/service-kit/metrics"
 	"go.uber.org/zap"
 	"net/http"
 	"os"

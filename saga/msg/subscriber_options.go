@@ -1,6 +1,6 @@
 package msg
 
-import "github.com/gogovan/ggx-kr-service-utils/logger"
+import "github.com/nguyenta1993/service-kit/logger"
 
 // SubscriberOption options for MessageConsumers
 type SubscriberOption func(*Subscriber)

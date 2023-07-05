@@ -1,7 +1,7 @@
 package kafka
 
 import (
-	"github.com/gogovan/ggx-kr-service-utils/saga/msg"
+	"github.com/nguyenta1993/service-kit/saga/msg"
 
 	kafka "github.com/segmentio/kafka-go"
 )

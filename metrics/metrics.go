@@ -2,8 +2,8 @@ package metrics
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gogovan/ggx-kr-service-utils/http/middlewares"
-	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/nguyenta1993/service-kit/http/middlewares"
+	"github.com/nguyenta1993/service-kit/logger"
 	"go.uber.org/zap"
 )
 

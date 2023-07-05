@@ -1,6 +1,6 @@
 package saga
 
-import "github.com/gogovan/ggx-kr-service-utils/saga/msg"
+import "github.com/nguyenta1993/service-kit/saga/msg"
 
 // WithSagaInfo is an option to set additional Saga specific headers
 func WithSagaInfo(instance *Instance) msg.MessageOption {

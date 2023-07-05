@@ -2,8 +2,8 @@ package request
 
 import (
 	"github.com/gin-gonic/gin"
-	jwtToken "github.com/gogovan/ggx-kr-service-utils/token"
 	"github.com/mitchellh/mapstructure"
+	jwtToken "github.com/nguyenta1993/service-kit/token"
 )
 
 const UserContextKey = "usercontext"

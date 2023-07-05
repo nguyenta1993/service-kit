@@ -1,7 +1,7 @@
 package tracing
 
 import (
-	"github.com/gogovan/ggx-kr-service-utils/logger"
+	"github.com/nguyenta1993/service-kit/logger"
 	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"

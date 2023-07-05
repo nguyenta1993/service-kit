@@ -1,6 +1,6 @@
 package saga
 
-import "github.com/gogovan/ggx-kr-service-utils/saga/msg"
+import "github.com/nguyenta1993/service-kit/saga/msg"
 
 const (
 	notCompensating = false
